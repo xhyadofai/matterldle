@@ -1,0 +1,1726 @@
+:root {
+    --primary: #6C5CE7;
+    --secondary: #00CEC9;
+    --accent: #FD79A8;
+    --dark-bg: #0F172A;
+    --card-bg: rgba(30, 41, 59, 0.8);
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --success: #10B981;
+    --danger: #EF4444;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--dark-bg), #1E293B);
+    min-height: 100vh;
+    color: var(--text-primary);
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 25px 25px, rgba(108, 92, 231, 0.1) 2px, transparent 0);
+    background-size: 50px 50px;
+    z-index: -1;
+}
+
+h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 0 0 20px rgba(108, 92, 231, 0.2);
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 800px;
+    justify-content: center;
+}
+
+.tab {
+    padding: 12px 24px;
+    background: var(--card-bg);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    border: 1px solid transparent;
+    border-bottom: none;
+}
+
+.tab.active {
+    background: var(--primary);
+    box-shadow: 0 -4px 10px rgba(108, 92, 231, 0.3);
+    transform: translateY(-3px);
+}
+
+.stat-box {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.stat-box:hover::before {
+    opacity: 1;
+}
+
+.stat-box div {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.stat-box div:first-child {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+    width: 100%;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+}
+
+button:disabled {
+    background: linear-gradient(90deg, #334155, #475569);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(-20px);
+    animation: slideUp 0.4s forwards;
+}
+
+@keyframes slideUp {
+    to { transform: translateY(0); }
+}
+
+.modal h2 {
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.modal p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    line-height: 1.8;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    margin-top: 0;
+    flex: 1;
+}
+
+#developerPanel {
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#developerPanel h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+#developerPanel input {
+    background: #334155;
+    border: 1px solid var(--primary);
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+#developerPanel button {
+    width: auto;
+    padding: 8px 15px;
+    margin-top: 0;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .stat-box {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+    }
+
+    #developerPanel {
+        width: calc(100% - 40px);
+    }
+}
+
+/* 黑洞相关样式 */
+.black-hole-btn {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.black-hole-btn:not(:disabled):hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* 升级选项卡样式 */
+.setting-item {
+    margin: 20px 0;
+    padding: 22px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.setting-item h3 {
+    color: #ddd;
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+}
+
+.setting-item button {
+    margin-top: 15px;
+}
+
+/* 升级选项卡样式 */
+.upgrade-item {
+    margin: 20px 0;
+    padding: 22px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.upgrade-item h3 {
+    color: #ddd;
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+}
+
+.upgrade-item div {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.upgrade-item button {
+    margin-top: 15px;
+}
+
+/* 黑洞动画相关样式 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 升级选项卡样式 */
+.upgrades-container {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.upgrade-item {
+    margin: 20px 0;
+    padding: 22px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.upgrade-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.upgrade-item h3 {
+    color: #ddd;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.upgrade-item .cost {
+    color: #a5b4fc;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.upgrade-item .effect {
+    color: #e0e7ff;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+}
+
+.upgrade-item button {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.upgrade-item button:disabled {
+    background: #6b7280;
+    box-shadow: none;
+}
+
+.upgrade-item button:not(:disabled):hover {
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .upgrades-container {
+        padding: 25px;
+        margin: 15px;
+    }
+
+    .upgrade-item {
+        padding: 18px;
+    }
+}
+
+/* 按钮样式优化 */
+.btn-success {
+    background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.btn-danger {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.btn-secondary {
+    background: linear-gradient(90deg, #64748b, #475569);
+}
+
+/* 选项卡内容容器 */
+.tab-content {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* 黑洞按钮样式 */
+.black-hole-btn {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.black-hole-btn:not(:disabled):hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* 黑洞动画容器 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+/* 黑洞粒子动画 */
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+/* 黑洞按钮样式 */
+.black-hole-btn {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.black-hole-btn:not(:disabled):hover {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 升级选项卡样式 */
+#upgradesTab {
+    display: none;
+}
+
+.upgrades-container {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    padding: 35px;
+    border-radius: 24px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45);
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.upgrade-item {
+    margin: 20px 0;
+    padding: 22px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.upgrade-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.upgrade-item h3 {
+    color: #ddd;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.upgrade-item .cost {
+    color: #a5b4fc;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.upgrade-item .effect {
+    color: #e0e7ff;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+}
+
+.upgrade-item button {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.upgrade-item button:disabled {
+    background: linear-gradient(90deg, #64748b, #475569);
+    box-shadow: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .upgrades-container {
+        padding: 25px;
+        margin: 15px;
+    }
+
+    .upgrade-item {
+        padding: 18px;
+    }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞动画容器 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+/* 粒子效果 */
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞按钮样式 */
+.black-hole-btn {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.black-hole-btn:not(:disabled):hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画容器 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.event-horizon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+}
+
+@keyframes pulse {
+    from { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); }
+    to { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 50px rgba(255, 255, 255, 0.3); }
+}
+
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: particleFall 2s forwards;
+}
+
+@keyframes particleFall {
+    from { transform: translateY(-100px); opacity: 1; }
+    to { transform: translateY(100px) translateX(50px); opacity: 0; }
+}
+
+/* 黑洞模态框样式 */
+#blackHoleModal .modal-content {
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+#blackHoleModal h2 {
+    color: #ef4444;
+}
+
+/* 黑洞按钮样式 */
+#blackHole {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* 黑洞统计框样式 */
+.stat-box.black-hole {
+    border-top: 4px solid #ef4444;
+}
+
+.stat-box.black-hole:hover {
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.2);
+}
+
+/* 黑洞粒子动画 */
+.black-hole-animation {
+    position: relative;
+    height: 220px;
+    margin: 1rem 0;
+}
+
+/* 黑洞事件视界 */
+.event-horizon {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #111, #000);
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite alternate;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
