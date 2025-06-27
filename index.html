@@ -1,9 +1,9 @@
-当前终点：70生成器 无自动存档警告
+当前终点：1黑洞（后面平衡性没有） 无自动存档警告
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>物质放置</title>
+    <title>物质放置0.0.2 by -_-xhy_</title>
     <script src="OmegaNum.js"></script>
     <style>
         .tabs {
@@ -384,12 +384,36 @@
         <div class="tab active" data-tab="matter">物质</div>
         <div class="tab" data-tab="settings">设置</div>
 <div class="tab" data-tab="upgrades">升级</div>
-<div class="tab" data-tab="antimatter">反物质</div>
+        <div class="tab" data-tab="antimatter" style="filter: invert(1); display: none;">反物质</div>
     </div>
 
     <!-- 升级选项卡内容 -->
+    <div class="tab-content" id="antimatterTab" style="filter: invert(1); display: none;">
+        <h1>反物质</h1>
+        <div class="stat-box">
+            <div>当前反物质: <span id="antimatter">0</span></div>
+            <div>下一次重置需物质: <span id="nextResetMatter">5e8</span></div>
+            <div>本次重置获得反物质: <span id="resetGain">0</span></div>
+            <button id="resetForAntimatter" style="display: none;">重置以获得 <span id="resetGainSpan">5e8</span> 反物质</button>
+        </div>
+    </div>
+    <div id="antimatterModal" class="modal">
+        <div class="modal-content">
+            <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="30" cy="50" r="10" fill="blue" />
+                <circle cx="70" cy="50" r="10" fill="red" />
+                <text x="50" y="20" font-size="12" text-anchor="middle">+</text>
+                <text x="50" y="80" font-size="12" text-anchor="middle">-</text>
+            </svg>
+            <h2>Error！</h2>
+            <p>生成器错误的生产了一个电荷和物质完全相反的反物质。它和物质快速湮灭，炸毁了你的所有物质。</p>
+            <div class="modal-buttons">
+                <button id="confirmAntimatter">重置物质为10，但获得一个反物质</button>
+            </div>
+        </div>
+    </div>
     <div class="tab-content" id="upgradesTab" style="display: none;">
-        <h1>升级选项卡内容</h1>
+        <h1>升级</h1>
         <div class="upgrade-card">
             <h3>密度过高</h3>
             <p>价格: 100物质</p>
@@ -412,16 +436,6 @@
     <div id="softCapNotice" style="display: none; color: red;">软上限提示内容</div>
     <div id="softCapWarning" style="display: none;"></div>
 
-    <!-- 反物质选项卡内容 -->
-    <div class="tab-content" id="antimatterTab" style="display: none;">
-        <h1>反物质升级</h1>
-        <div class="upgrade-card" style="filter: invert(1);">
-            <h3>新时代！</h3>
-            <p>价格: 1反物质</p>
-            <p>效果: 每秒物质*2</p>
-            <button id="buyNewEra" style="filter: invert(1);">购买升级</button>
-        </div>
-    </div>
 
     <!-- 设置选项卡内容 -->
     <div class="tab-content" id="settingsTab" style="display: none;">
@@ -437,7 +451,14 @@
                 <input type="file" id="fileImport" accept=".load" style="display: none;">
                 <button id="importButton">导入</button>
             </div>
-
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="autoSaveToggle" checked> 开启自动存档 (每15秒)
+                </label>
+            </div>
+            <div class="setting-item">
+                <button id="deleteSave" style="background: linear-gradient(45deg, var(--danger), #991b1b);">删除存档</button>
+            </div>
         </div>
     </div>
 
@@ -499,8 +520,212 @@
         </div>
     </div>
     <script>
+        let autoSaveInterval = null;
+
+        // 页面加载时自动加载存档
+        document.addEventListener('DOMContentLoaded', () => {
+            const saveData = localStorage.getItem('matterldleSave');
+            if (saveData) {
+                try {
+                    const parsedData = JSON.parse(saveData);
+                    game.matter = new OmegaNum(parsedData.matter);
+                    lastResetMatter = new OmegaNum(parsedData.lastResetMatter);
+                    game.generatorCount = new OmegaNum(parsedData.generatorCount);
+                    game.enhancerCount = new OmegaNum(parsedData.enhancerCount);
+                    game.blackHoleCount = new OmegaNum(parsedData.blackHoleCount);
+                    game.blackHoleBonus = new OmegaNum(parsedData.blackHoleBonus);
+                    game.enhancerBonus = new OmegaNum(parsedData.enhancerBonus);
+                    generatorCost = new OmegaNum(parsedData.generatorCost);
+                    enhancerCost = new OmegaNum(parsedData.enhancerCost);
+                    game.blackHoleCost = new OmegaNum(parsedData.blackHoleCost);
+                    densityUpgradePurchased = parsedData.densityUpgradePurchased;
+                    compressMatterPurchased = parsedData.compressMatterPurchased;
+                    expandWarehousePurchased = parsedData.expandWarehousePurchased;
+                    antimatterResetCount = new OmegaNum(parsedData.antimatterResetCount);
+                    antimatter = new OmegaNum(parsedData.antimatter);
+                    updateUI();
+                } catch (e) {
+                    console.error('加载存档失败:', e);
+                }
+            }
+            
+            // 初始化自动存档
+            const autoSaveToggle = document.getElementById('autoSaveToggle');
+            if (autoSaveToggle && autoSaveToggle.checked) {
+                autoSaveInterval = setInterval(autoSaveGame, 15000);
+            }
+        });
+        
+        // 自动存档函数
+        function autoSaveGame() {
+            if (typeof saveGame === 'function') {
+                saveGame();
+                showNotification('自动存档成功', 'success');
+            } else {
+                localStorage.setItem('matterldleSave', JSON.stringify({
+                    lastResetMatter: lastResetMatter.toString(),
+                    matter: game.matter.toString(),
+                    generatorCount: game.generatorCount.toString(),
+                    enhancerCount: game.enhancerCount.toString(),
+                    blackHoleCount: game.blackHoleCount.toString(),
+                    blackHoleBonus: game.blackHoleBonus.toString(),
+                    enhancerBonus: game.enhancerBonus.toString(),
+                    generatorCost: generatorCost.toString(),
+                    enhancerCost: enhancerCost.toString(),
+                    blackHoleCost: game.blackHoleCost.toString(),
+                    densityUpgradePurchased,
+                    compressMatterPurchased,
+                    expandWarehousePurchased,
+                    antimatterResetCount: antimatterResetCount.toString(),
+                    antimatter: antimatter.toString()
+                }));
+                showNotification('自动存档成功', 'success');
+            }
+        }
+        
+        // 更新重置物质需求和显示
+        function updateResetRequirement(resetCount = 1) {
+            // 一次重置一个始终为 5e8 物质
+            resetMatterRequirement = new OmegaNum('5e8');
+            if (resetCount > 1) {
+                resetMatterRequirement = resetMatterRequirement.mul(resetCount).pow(1.1);
+            }
+            document.getElementById('nextResetMatter').textContent = formatOmegaNum(resetMatterRequirement);
+        }
+
+// 确认反物质重置
+        document.getElementById('confirmAntimatter')?.addEventListener('click', () => {
+            // 在重置前记录当前物质值
+            const preResetMatter = game.matter;
+            
+            // 重置除反物质外的一切
+            game.matter = new OmegaNum(10);
+            game.generatorCount = new OmegaNum(0);
+            game.enhancerCount = new OmegaNum(0);
+            game.blackHoleCount = new OmegaNum(0);
+            game.blackHoleBonus = new OmegaNum(1);
+            game.enhancerBonus = new OmegaNum(1);
+            generatorCost = new OmegaNum(10);
+            enhancerCost = new OmegaNum(100);
+            blackHoleCost = new OmegaNum(1e30);
+            game.generatorCost = generatorCost;
+            game.enhancerCost = enhancerCost;
+            game.blackHoleCost = blackHoleCost;
+            densityUpgradePurchased = false;
+            compressMatterPurchased = false;
+            expandWarehousePurchased = false;
+            
+            if (lastResetMatter.eq(0)) {
+                // 第一次强制重置，只获得 1 个反物质
+                antimatter = antimatter.add(1);
+            } else {
+                // 后续重置按物质数量计算
+                const gain = preResetMatter.sub(lastResetMatter);
+                const resetGain = gain.div(resetMatterRequirement).floor();
+                antimatter = antimatter.add(resetGain.gt(0) ? resetGain : 1);
+            }
+            antimatterUnlocked = true;
+            
+            document.getElementById('antimatter').textContent = formatOmegaNum(antimatter);
+            lastResetMatter = preResetMatter;
+            updateResetRequirement();
+            document.getElementById('nextResetMatter').textContent = formatOmegaNum(resetMatterRequirement);
+            const resetGain = lastResetMatter.eq(0) ? new OmegaNum(1) : preResetMatter.sub(lastResetMatter);
+                document.getElementById('resetGain').textContent = formatOmegaNum(resetGain);
+                document.getElementById('resetGainSpan').textContent = formatOmegaNum(resetGain);
+            if (antimatterUnlocked) {
+                document.getElementById('resetForAntimatter').style.display = 'block';
+            }
+            document.getElementById('antimatterModal').style.display = 'none';
+            updateUI();
+            updateResetButton();
+        });
+
+        // 检查是否能进行反物质重置并更新按钮状态
+        function updateResetButton() {
+            const resetButton = document.getElementById('resetForAntimatter');
+            if (game.matter.gte(resetMatterRequirement)) {
+                resetButton.disabled = false;
+            } else {
+                resetButton.disabled = true;
+            }
+        }
+
+        // 重置获取反物质按钮事件
+        document.getElementById('resetForAntimatter')?.addEventListener('click', () => {
+            if (game.matter.gte(resetMatterRequirement)) {
+                if (lastResetMatter.eq(0)) {
+                    // 第一次强制重置，只获得 1 个反物质
+                    antimatter = antimatter.add(1);
+                } else {
+                    // 后续重置按物质数量计算
+                    const gain = game.matter.sub(lastResetMatter);
+                    const resetGain = gain.div(resetMatterRequirement).floor();
+                    antimatter = antimatter.add(resetGain.gt(0) ? resetGain : 1);
+                }
+                const preResetMatter = game.matter;
+                game.matter = new OmegaNum(10);
+                lastResetMatter = preResetMatter;
+                game.generatorCount = new OmegaNum(0);
+                game.enhancerCount = new OmegaNum(0);
+                // 移除黑洞相关重置，避免重置反物质重置价格
+                // game.blackHoleCount = new OmegaNum(0);
+                // game.blackHoleBonus = new OmegaNum(1);
+                // blackHoleCost = new OmegaNum(1e30);
+                // game.blackHoleCost = blackHoleCost;
+                generatorCost = new OmegaNum(10);
+                enhancerCost = new OmegaNum(100);
+                game.generatorCost = generatorCost;
+                game.enhancerCost = enhancerCost;
+                densityUpgradePurchased = false;
+                compressMatterPurchased = false;
+                expandWarehousePurchased = false;
+                updateResetRequirement();
+                document.getElementById('antimatter').textContent = formatOmegaNum(antimatter);
+                antimatterResetCount = antimatterResetCount.add(1);
+                
+                // 显示反物质选项卡
+                document.getElementById('antimatterTab').style.display = 'block';
+                
+                // 更新升级按钮状态
+                updateUpgradeButtons();
+                
+                const resetGain = lastResetMatter.eq(0) ? new OmegaNum(1) : preResetMatter.sub(lastResetMatter);
+                document.getElementById('resetGain').textContent = formatOmegaNum(resetGain);
+                document.getElementById('resetGainSpan').textContent = formatOmegaNum(resetGain);
+                localStorage.setItem('matterldleSave', JSON.stringify({
+                    matter: game.matter.toString(),
+                    generatorCount: game.generatorCount.toString(),
+                    enhancerCount: game.enhancerCount.toString(),
+                    blackHoleCount: game.blackHoleCount.toString(),
+                    blackHoleBonus: game.blackHoleBonus.toString(),
+                    enhancerBonus: game.enhancerBonus.toString(),
+                    generatorCost: generatorCost.toString(),
+                    enhancerCost: enhancerCost.toString(),
+                    blackHoleCost: game.blackHoleCost.toString(),
+                    densityUpgradePurchased,
+                    compressMatterPurchased,
+                    expandWarehousePurchased,
+                    antimatterResetCount: antimatterResetCount.toString(),
+                    antimatter: antimatter.toString()
+                }));
+                updateUI();
+                updateResetButton();
+            }
+        });
+
         // 统一的选项卡切换功能
         document.addEventListener('DOMContentLoaded', function() {
+            // 自动存档开关监听
+            const autoSaveToggle = document.getElementById('autoSaveToggle');
+            autoSaveToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    autoSaveInterval = setInterval(autoSaveGame, 15000);
+                } else {
+                    clearInterval(autoSaveInterval);
+                }
+            });
+            
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
             
@@ -525,24 +750,56 @@
             
             // 初始化默认显示物质选项卡
             document.querySelector('.tab[data-tab="matter"]').click();
+            // 在确保 game 初始化后调用更新按钮状态
+            updateResetButton();
         });
         
         // 删除存档功能
         document.getElementById('deleteSave')?.addEventListener('click', () => {
             if (confirm('确定要删除存档吗？此操作不可撤销。')) {
-                localStorage.removeItem('gameSave');
-                showNotification('存档已删除', 'success');
-                // 重置游戏状态
-                initGame();
+                localStorage.removeItem('matterldleSave');
+                alert('存档已删除');
+                // 简单重置部分游戏状态
+                game.matter = new OmegaNum(10);
+                game.generatorCount = new OmegaNum(0);
+                game.enhancerCount = new OmegaNum(0);
+                game.blackHoleCount = new OmegaNum(0);
+                game.blackHoleBonus = new OmegaNum(1);
+                game.enhancerBonus = new OmegaNum(1);
+                generatorCost = new OmegaNum(10);
+                enhancerCost = new OmegaNum(100);
+                game.blackHoleCost = new OmegaNum(1e30);
+                densityUpgradePurchased = false;
+                compressMatterPurchased = false;
+                expandWarehousePurchased = false;
+                antimatterResetCount = new OmegaNum(0);
+                antimatter = new OmegaNum(0);
+                updateUI();
             }
         });
         
         // 在页面加载时初始化升级按钮状态
         let matterMultiplier = 1;
+        let antimatter = new OmegaNum(0);
+        let antimatterUnlocked = false;
+        let resetMatterRequirement = new OmegaNum('5e8');
+        let lastResetMatter = new OmegaNum(0);
+        let antimatterResetCount = new OmegaNum(0);
+
+        // 页面加载时检查反物质选项卡是否显示
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化升级按钮状态
+            updateUpgradeButtons();
+            
+            if (antimatterResetCount.gt(0)) {
+                document.getElementById('antimatterTab').style.display = 'block';
+            }
+        });
         // 在物质变化时更新按钮状态
         function updateMatterDisplay() {
             // 原有的物质显示逻辑...
-            updateUpgradeButtons(); // 添加此行以更新按钮状态
+            updateUpgradeButtons(); // 更新升级按钮状态
+            updateResetButton();    // 更新反物质重置按钮状态
         }
         // 页面加载时初始化选项卡
         document.addEventListener('DOMContentLoaded', function() {
@@ -614,11 +871,6 @@
         // 升级功能实现
 let densityUpgradePurchased = false;
 let softCapEnabled = true;
-let antimatter = new OmegaNum(0);
-let antimatterUnlocked = false;
-let newEraPurchased = false;
-const antimatterUpgradeCost = new OmegaNum(5e8);
-const newEraCost = new OmegaNum(1);
 const densityUpgradeCost = new OmegaNum(100);
 const densityUpgradeMultiplier = 2;
 let compressMatterPurchased = false;
@@ -627,40 +879,6 @@ let expandWarehousePurchased = false;
 const expandWarehouseCost = new OmegaNum('1e8');
 
 function updateUpgradeButtons() {
-    // 反物质升级按钮逻辑
-    const antimatterButton = document.getElementById('buyAntimatter');
-    if (antimatterButton) {
-        if (antimatterUnlocked) {
-            antimatterButton.style.display = 'none';
-        } else if (game.matter.gte(antimatterUpgradeCost)) {
-            antimatterButton.style.backgroundColor = '#10b981'; // 可购买绿色
-            antimatterButton.disabled = false;
-        } else {
-            antimatterButton.style.backgroundColor = '#cccccc'; // 买不起灰色
-            antimatterButton.disabled = true;
-        }
-    }
-
-    // 新时代升级按钮逻辑
-    const newEraButton = document.getElementById('buyNewEra');
-    if (newEraButton) {
-        if (antimatterUnlocked) {
-            document.getElementById('antimatterTab').style.display = 'block';
-            if (newEraPurchased) {
-                newEraButton.style.backgroundColor = '#3b82f6'; // 已购买蓝色
-                newEraButton.textContent = '已购买';
-                newEraButton.disabled = true;
-            } else if (antimatter.gte(newEraCost)) {
-                newEraButton.style.backgroundColor = '#10b981'; // 可购买绿色
-                newEraButton.disabled = false;
-            } else {
-                newEraButton.style.backgroundColor = '#cccccc'; // 买不起灰色
-                newEraButton.disabled = true;
-            }
-        } else {
-            document.getElementById('antimatterTab').style.display = 'none';
-        }
-    }
 
     // 原有升级按钮逻辑
     const densityBuyButton = document.getElementById('buyDensityUpgrade');
@@ -697,27 +915,6 @@ function updateUpgradeButtons() {
 
     const expandWarehouseButton = document.getElementById('buyExpandWarehouse');
 
-    // 反物质购买事件
-    document.getElementById('buyAntimatter')?.addEventListener('click', () => {
-        if (!antimatterUnlocked && game.matter.gte(antimatterUpgradeCost)) {
-            game.matter = game.matter.sub(antimatterUpgradeCost);
-            antimatterUnlocked = true;
-            showNotification('成功解锁反物质！');
-            updateUpgradeButtons();
-        }
-    });
-
-    // 新时代购买事件
-    document.getElementById('buyNewEra')?.addEventListener('click', () => {
-        if (!newEraPurchased && antimatterUnlocked && antimatter.gte(newEraCost)) {
-            antimatter = antimatter.sub(newEraCost);
-            newEraPurchased = true;
-            // 每秒物质*2
-            game.matterGenerationRate = game.matterGenerationRate.mul(2);
-            showNotification('成功升级新时代！');
-            updateUpgradeButtons();
-        }
-    });
     if (expandWarehouseButton) {
         if (typeof softCapEnabled !== 'undefined' && softCapEnabled) {
             if (expandWarehousePurchased) {
@@ -788,18 +985,61 @@ document.getElementById('buyCompressMatter')?.addEventListener('click', () => {
 });
 
 // 手动存档（云端）
+        // 云端存档导出
         function cloudSave() {
-            // 这里仅作示例，实际需要实现云端存储逻辑
             try {
-                // 模拟云端保存
-                showNotification('云端存档功能暂未完整实现，当前仅模拟保存成功', 'warning');
+                const serialized = serializeOmegaNums(game);
+                const saveData = btoa(JSON.stringify({
+                    version: 1.2,
+                    timestamp: Date.now(),
+                    gameData: serialized
+                }));
+                
+                const link = document.createElement('a');
+                link.href = `data:text/plain;base64,${saveData}`;
+                link.download = `matterldle_cloud_${Date.now()}.txt`;
+                link.click();
+                showNotification('云端存档导出成功', 'success');
                 return true;
             } catch (e) {
-                console.error('云端保存失败:', e);
-                showNotification('云端保存失败，请重试', 'error');
+                console.error('云端导出失败:', e);
+                showNotification('导出失败: ' + e.message, 'error');
                 return false;
             }
         }
+
+        // 云端存档导入
+        document.getElementById('loadGame')?.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.txt';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = () => {
+                    try {
+                        const { version, gameData } = JSON.parse(atob(reader.result));
+                        if (version < 1.2) throw new Error('不兼容的存档版本');
+                        
+                        const loaded = deserializeOmegaNums(gameData);
+                        Object.entries(loaded).forEach(([key, value]) => {
+                            if (game[key] instanceof OmegaNum) {
+                                game[key] = new OmegaNum(value);
+                            } else {
+                                game[key] = value;
+                            }
+                        });
+                        updateUI();
+                        showNotification('云端存档加载成功', 'success');
+                    } catch (error) {
+                        console.error('存档加载失败:', error);
+                        showNotification(`加载失败: ${error.message}`, 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        });
 
         // 定义需要序列化的 OmegaNum 属性
         const OMEGA_NUM_PROPS = ['matter', 'generatorCount', 'enhancerCount', 'blackHoleCount', 'blackHoleBonus', 'enhancerBonus', 'generatorCost', 'enhancerCost', 'blackHoleCost', 'densityUpgradeCost', 'compressMatterCost', 'expandWarehouseCost'];
@@ -872,7 +1112,12 @@ document.getElementById('buyCompressMatter')?.addEventListener('click', () => {
         // 手动存档（文件）
         async function fileSave() {
             try {
-                const gameData = JSON.stringify(serializeOmegaNums(game));
+                const gameData = JSON.stringify({
+                    ...serializeOmegaNums(game),
+                    densityUpgradePurchased: densityUpgradePurchased,
+                    compressMatterPurchased: compressMatterPurchased,
+                    expandWarehousePurchased: expandWarehousePurchased
+                });
                 if (!gameData) {
                     throw new Error('游戏数据为空，无法存档');
                 }
@@ -1020,6 +1265,9 @@ document.getElementById('buyCompressMatter')?.addEventListener('click', () => {
 
         // 更新 UI
         function updateUI() {
+            if (antimatterUnlocked) {
+                document.querySelector('.tab[data-tab="antimatter"]').style.display = 'block';
+            }
             document.getElementById('blackHole').disabled = game.matter.lt(blackHoleCost);
             document.getElementById('blackHoleCost').textContent = formatOmegaNum(blackHoleCost);
             document.getElementById('matter').textContent = formatOmegaNum(game.matter);
@@ -1034,6 +1282,7 @@ document.getElementById('buyCompressMatter')?.addEventListener('click', () => {
             document.getElementById('enhancerCost').textContent = formatOmegaNum(enhancerCost);
             document.getElementById('blackHoleCount').textContent = game.blackHoleCount.toString();
             document.getElementById('blackHoleBonus').textContent = game.blackHoleBonus.toString();
+            document.getElementById('antimatter').textContent = formatOmegaNum(antimatter);
 
             // 按钮状态
             document.getElementById('buyGenerator').disabled = game.matter.lt(generatorCost);
@@ -1075,8 +1324,8 @@ function formatOmegaNum(num, round = true) {
                 const warningElement = document.createElement('div');
                 warningElement.id = 'softCapWarning';
                 warningElement.textContent = '由于你把所有物质塞在一个小地方，物质密度过大，产量被软上限限制！';
-                warningElement.style.color = 'yellow';
-                warningElement.style.marginBottom = '10px';
+                warningElement.style.color = 'while';
+                warningElement.style.marginBottom = '2px';
                 const matterBox = document.querySelector('.stat-box:has(#matter)');
                 if (matterBox) {
                     matterBox.insertBefore(warningElement, matterBox.firstChild);
@@ -1084,28 +1333,22 @@ function formatOmegaNum(num, round = true) {
             } else {
                 document.getElementById('softCapWarning')?.remove();
             }
+            // 反物质增幅逻辑
+            production = production.mul(new OmegaNum(1).add(antimatter.div(2)));
             return production;
         }
 
-        // 游戏循环
-        let lastTime = performance.now();
-function gameLoop() {
-    const now = performance.now();
-    const deltaTime = (now - lastTime) / 1000;
-    lastTime = now;
-    
-    const production = calculateProduction().mul(deltaTime);
-    game.matter = game.matter.add(production);
-    if (antimatterUnlocked) {
-        const producedMatter = game.matterGenerationRate.mul(deltaTime);
-        const antimatterToProduce = producedMatter.div(5e8).floor();
-        if (antimatterToProduce.gt(0)) {
-            antimatter = antimatter.add(antimatterToProduce);
-        }
+        // 修改数值格式化函数
+function formatOmegaNum(num) {
+    if (num.lt(1e6)) {
+        const rounded = num.round(3).toNumber();
+        return rounded.toLocaleString();
+    } else {
+        return num.toExponential(3).replace('+', '');
     }
-    updateUI();
-    requestAnimationFrame(gameLoop);
 }
+
+        let lastTime = performance.now();
 
         // 购买物质生成器
         document.getElementById('buyGenerator').addEventListener('click', () => {
@@ -1288,6 +1531,9 @@ function initGame() {
         blackHoleBonus: new OmegaNum(1),
         enhancerBonus: new OmegaNum(1)
     };
+    window.densityUpgradePurchased = false;
+    window.compressMatterPurchased = false;
+    window.expandWarehousePurchased = false;
 
     // 完整存档加载（包含所有核心状态）
         const saveData = localStorage.getItem('matterldleSave');
@@ -1302,6 +1548,10 @@ function initGame() {
             generatorCost = new OmegaNum(parsed.generatorCost);
             enhancerCost = new OmegaNum(parsed.enhancerCost);
             blackHoleCost = new OmegaNum(parsed.blackHoleCost);
+            densityUpgradePurchased = parsed.densityUpgradePurchased || false;
+            compressMatterPurchased = parsed.compressMatterPurchased || false;
+            expandWarehousePurchased = parsed.expandWarehousePurchased || false;
+            antimatterResetCount = new OmegaNum(parsed.antimatterResetCount) || new OmegaNum(0);
         }
 }
 
@@ -1315,9 +1565,11 @@ function formatOmegaNum(num) {
     }
 }
 
-// 在游戏循环中添加自动保存
-function gameLoop(timestamp) {
+function gameLoop() {
     const now = performance.now();
+    if (game.matter.gte(new OmegaNum('5e8')) && !antimatterUnlocked) {
+        document.getElementById('antimatterModal').style.display = 'flex';
+    }
     const deltaTime = (now - lastTime) / 1000;
     lastTime = now;
     
@@ -1325,8 +1577,6 @@ function gameLoop(timestamp) {
     game.matter = game.matter.add(production);
     updateUI();
     requestAnimationFrame(gameLoop);
-    
-    // 已移除自动存档功能
 }
 
         // 更新黑洞UI显示
