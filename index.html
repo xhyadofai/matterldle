@@ -1,52 +1,64 @@
-当前终点：1黑洞（后面平衡性没有） 无自动存档警告
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>物质放置0.0.2 by -_-xhy_</title>
+    <title>物质放置：Antimatter</title>
     <script src="OmegaNum.js"></script>
     <style>
-        .tabs {
+                .tabs {
             display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            gap: 5px;
+            margin: 70px 0 10px 0;
+            border-bottom: 1px solid #4CAF50;
+            padding-bottom: 5px;
             width: 100%;
-            max-width: 800px;
             justify-content: center;
+            position: relative;
+            z-index: 10;
         }
         .tab {
-            padding: 12px 24px;
-            background: var(--card-bg);
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            border: 1px solid transparent;
+            padding: 10px 20px;
+            background: #1a1a1a;
+            border: 1px solid #4CAF50;
             border-bottom: none;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 0 2px;
         }
         .tab.active {
-            background: var(--primary);
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
-            transform: translateY(-2px);
+            background: #2196F3;
+            color: white;
+            border-color: #2196F3;
         }
-        .tab:not(.active):hover {
-            background: rgba(30, 41, 59, 0.8);
+        .sub-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
         }
-        :root {
-            --primary: #6C5CE7;
-            --secondary: #00CEC9;
-            --accent: #FD79A8;
-            --dark-bg: #0F172A;
-            --card-bg: rgba(30, 41, 59, 0.8);
-            --text-primary: #F8FAFC;
-            --text-secondary: #94A3B8;
-            --success: #10B981;
-            --danger: #EF4444;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .sub-tab {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            border-bottom: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-right: 4px;
         }
-
+        .sub-tab.active {
+            background: #ff0000;
+            border-color: #ff0000;
+        }
+        .tab.antimatter-tab {
+            background: #000000;
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+        .tab.antimatter-tab.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -54,57 +66,35 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--dark-bg), #1E293B);
+            gap: 10px;
+            padding: 10px;
+            background: #000000;
             min-height: 100vh;
-            color: var(--text-primary);
-            background-attachment: fixed;
+            color: #ffffff;
             position: relative;
-            overflow-x: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(circle at 25px 25px, rgba(108, 92, 231, 0.1) 2px, transparent 0);
-            background-size: 50px 50px;
-            z-index: -1;
         }
 
         h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-size: 1.5rem;
+            color: #00ff00;
             text-align: center;
-            margin: 20px 0;
-            text-shadow: 0 0 20px rgba(108, 92, 231, 0.2);
-            font-weight: 800;
+            margin: 10px 0;
+            font-weight: normal;
         }
 
         .stat-box {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 16px;
+            background: #1a1a1a;
+            padding: 15px;
+            border: 1px solid #FF9800;
             width: 100%;
             max-width: 350px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
+            font-size: 14px;
+            margin: 5px;
         }
 
         .stat-box::before {
@@ -114,7 +104,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: none;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -136,22 +126,18 @@
         .stat-box div:first-child {
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--secondary);
+            color: #2196F3;
         }
 
         button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 10px 20px;
+            border: 1px solid #2196F3;
+            border-radius: 4px;
+            background: #1a1a1a;
             color: white;
             cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            font-size: 14px;
+            margin-top: 8px;
             width: 100%;
         }
 
@@ -164,23 +150,51 @@
             transform: translateY(1px);
         }
 
-        button:disabled {
-            background: linear-gradient(90deg, #334155, #475569);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-            opacity: 0.7;
-        }
+        .buyUpgrade {
+    transition: all 0.3s ease;
+}
+
+.buyUpgrade.affordable {
+    background-color: #4CAF50;
+    border-color: #8BC34A;
+}
+
+.buyUpgrade.purchased {
+    background-color: #555555;
+    color: #aaaaaa;
+    cursor: not-allowed;
+    border-color: #777777;
+}
+
+button:disabled {
+    background: linear-gradient(90deg, #334155, #475569);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.buyUpgrade {
+    transition: all 0.3s ease;
+}
+
+.buyUpgrade.affordable {
+    background-color: #4CAF50;
+    border-color: #8BC34A;
+}
+
+.buyUpgrade.purchased {
+    background-color: #555555;
+    color: #aaaaaa;
+    cursor: not-allowed;
+    border-color: #777777;
+}
 
         button.black-hole-btn {
-            background: linear-gradient(45deg, var(--danger), #991b1b);
-            margin-top: 20px;
-            padding: 15px 24px;
-            font-size: 1.1rem;
-        }
-
-        button.black-hole-btn:not(:disabled):hover {
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.4);
+            background: #ff0000;
+            margin-top: 10px;
+            padding: 8px 16px;
+            font-size: 12px;
         }
 
         .modal {
@@ -190,180 +204,61 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(8px);
-            animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
 
-        .modal-content {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(108, 92, 231, 0.2);
-            transform: translateY(-20px);
-            animation: slideUp 0.4s forwards;
-        }
-
-        @keyframes slideUp {
-            to { transform: translateY(0); }
-        }
-
-        .modal h2 {
-            color: var(--accent);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .modal p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 25px;
-            line-height: 1.8;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .modal-buttons button {
-            flex: 1;
-            margin-top: 0;
-        }
-
-        .modal-buttons button:first-child {
-            background: linear-gradient(90deg, var(--danger), #DC2626);
-        }
-
-        .modal-buttons button:last-child {
-            background: linear-gradient(90deg, #475569, #334155);
-        }
-
-        .black-hole-animation {
-            position: relative;
-            height: 220px;
-            margin: 1rem 0;
-        }
-
-        .event-horizon {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #111, #000);
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulse 2s infinite alternate;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-        }
-
-        .event-horizon::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60%;
-            height: 60%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1), rgba(0,0,0,0.8));
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-                box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.15);
-                box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
-            }
-        }
-
-        .particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: particleFall 2s forwards;
-        }
-
-        @keyframes particleFall {
-            from { transform: translateY(-100px); opacity: 1; }
-            to { transform: translateY(100px) translateX(50px); opacity: 0; }
-        }
 
         #developerPanel {
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(108, 92, 231, 0.3);
-            border-radius: 12px;
-            padding: 20px;
+            background: #000000;
+            border: 1px solid #00ff00;
+            padding: 10px;
             color: white;
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             z-index: 9999;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-size: 12px;
         }
 
         #developerPanel h3 {
-            color: var(--accent);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
 
         #developerPanel input {
-            background: #334155;
-            border: 1px solid var(--primary);
+            background: #333333;
+            border: 1px solid #00ff00;
             color: white;
-            padding: 10px;
-            border-radius: 8px;
-            width: 150px;
-            margin-right: 10px;
+            padding: 4px;
+            width: 120px;
+            margin-right: 5px;
+            font-size: 12px;
         }
 
         #developerPanel button {
             width: auto;
-            padding: 10px 15px;
+            padding: 4px 8px;
             margin-top: 0;
+            font-size: 12px;
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 2rem;
+                font-size: 1.2rem;
             }
 
             .stat-box {
-                padding: 20px;
+                padding: 5px;
                 max-width: 100%;
             }
 
             .modal-content {
-                padding: 20px;
+                padding: 10px;
             }
 
             .modal-buttons {
@@ -372,45 +267,159 @@
 
             #developerPanel {
                 top: auto;
-                bottom: 20px;
-                right: 20px;
-                width: calc(100% - 40px);
+                bottom: 5px;
+                right: 5px;
+                width: calc(100% - 10px);
+                font-size: 10px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 新闻跑马灯 -->
+    <div id="newsContainer" style="position: fixed; top: 0; width: 100%; background: rgba(40, 40, 40, 0.95); color: #ffffff; padding: 10px; z-index: 9999; border-bottom: 2px solid #666; text-align: center;">
+      <div id="newsTickertape" style="font-family: Arial, sans-serif; font-size: 16px;"></div>
+    </div>
+    <div id="softCapNotice" style="display:none; color:#ff4444; background:#220000; text-align:center; font-size:18px; font-weight:bold; padding:6px 0; margin-top:48px; z-index:9998; position:relative;">因密度过高，产量受软上限限制！！！</div>
+    <div id="achievementDescBox" style="min-height:32px;text-align:center;font-size:17px;color:#FFD700;margin-bottom:10px;"></div>
     <div class="tabs">
         <div class="tab active" data-tab="matter">物质</div>
-        <div class="tab" data-tab="settings">设置</div>
-<div class="tab" data-tab="upgrades">升级</div>
-        <div class="tab" data-tab="antimatter" style="filter: invert(1); display: none;">反物质</div>
-    </div>
+    <div class="tab" data-tab="settings">设置</div>
+    <div class="tab" data-tab="stats">统计</div>
+    <div class="tab" data-tab="upgrades">升级</div>
+    <div class="tab" data-tab="achievements" id="achievementsTabBtn">成就</div>
+        <div class="tab" data-tab="automation" id="automationTabBtn" style="display:none;">自动化</div>
+        <div class="tab antimatter-tab" data-tab="antimatter" id="antimatterTabBtn" style="display:none;">反物质</div>
 
-    <!-- 升级选项卡内容 -->
-    <div class="tab-content" id="antimatterTab" style="filter: invert(1); display: none;">
-        <h1>反物质</h1>
-        <div class="stat-box">
-            <div>当前反物质: <span id="antimatter">0</span></div>
-            <div>下一次重置需物质: <span id="nextResetMatter">5e8</span></div>
-            <div>本次重置获得反物质: <span id="resetGain">0</span></div>
-            <button id="resetForAntimatter" style="display: none;">重置以获得 <span id="resetGainSpan">5e8</span> 反物质</button>
+    </div>
+    <!-- 统计选项卡内容 -->
+    <div class="tab-content" id="statsTab" style="display:none;">
+        <div class="sub-tabs" id="stats-sub-tabs">
+            <button class="sub-tab active" id="basicStatsTabBtn" data-subtab="basic-stats">基础统计</button>
+            <button class="sub-tab" id="antimatterStatsTabBtn" data-subtab="antimatter-stats">反物质统计</button>
+        </div>
+        <div class="sub-tab-content" id="basic-stats-content">
+            <div style="margin: 10px 0;">物质增强器倍率：<span id="enhancerMultiplierStat">1</span></div>
+            <div style="margin: 10px 0;">软上限减益：<span id="softCapDebuffStat">1</span></div>
+            <div style="margin: 10px 0;">压缩物质效果：<span id="compressEffectStat">1</span></div>
+        </div>
+        <div class="sub-tab-content" id="antimatter-stats-content" style="display:none; text-align:center; color:#aaa; font-size:18px;">反物质统计（测试用，暂无内容）</div>
+    </div>
+    <!-- 成就选项卡内容 -->
+    <div class="tab-content" id="achievementsTab" style="display:none;">
+        <div class="sub-tabs" id="achievements-sub-tabs">
+            <button class="sub-tab active" id="achievementsTabBtn" data-subtab="achievements">成就</button>
+            <button class="sub-tab" id="hiddenAchievementsTabBtn" data-subtab="hidden-achievements">隐藏成就</button>
+        </div>
+        <div class="sub-tab-content" id="achievements-content">
+            <div id="achievementsGrid" style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;"></div>
+        </div>
+        <div class="sub-tab-content" id="hidden-achievements-content" style="display:none;">
+            <div id="hiddenAchievementsList" style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;"></div>
         </div>
     </div>
-    <div id="antimatterModal" class="modal">
-        <div class="modal-content">
-            <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="30" cy="50" r="10" fill="blue" />
-                <circle cx="70" cy="50" r="10" fill="red" />
-                <text x="50" y="20" font-size="12" text-anchor="middle">+</text>
-                <text x="50" y="80" font-size="12" text-anchor="middle">-</text>
-            </svg>
-            <h2>Error！</h2>
-            <p>生成器错误的生产了一个电荷和物质完全相反的反物质。它和物质快速湮灭，炸毁了你的所有物质。</p>
-            <div class="modal-buttons">
-                <button id="confirmAntimatter">重置物质为10，但获得一个反物质</button>
+    <!-- 反物质选项卡内容 -->
+    <div id="automationTab" class="tab-content" style="display: none;">
+        <h2>自动化控制</h2>
+        <div class="automation-controls">
+            <div class="control-group">
+                  <label>自动购买生成器</label>
+                  <input type="checkbox" id="autoBuyGenerators" checked>
+              </div>
+              <div class="control-group">
+                  <label>自动购买增强器</label>
+                  <input type="checkbox" id="autoBuyEnhancers" checked>
+              </div>
+            <div class="control-group">
+                <label>自动购买升级</label>
+                <input type="checkbox" id="autoBuyUpgrades" checked>
+            </div>
+            <p class="automation-status">自动购买功能已激活，每5秒执行一次</p>
+        </div>
+    </div>
+        <div id="antimatterTab" class="tab-content" style="display:none;">
+        <!-- 反物质子选项卡按钮 -->
+<div class="sub-tabs" id="antimatter-sub-tabs">
+    <button class="sub-tab" id="antimatterTabBtn" data-subtab="antimatter">反物质</button>
+    <button class="sub-tab" id="antimatterUpgradesTabBtn" data-subtab="upgrades">反物质升级</button>
+    <button class="sub-tab" id="collapseTabBtn" data-subtab="collapse">坍缩</button>
+    <button class="sub-tab" id="challengeTabBtn" data-subtab="challenge">挑战</button>
+</div>
+        <div class="sub-tab-content" id="antimatter-content">
+    <div class="stat-box">
+        <div>反物质</div>
+        <div id="antimatter">0</div>
+        <div>生成速率: <span id="antimatterProduction">0</span>/s</div>
+    </div>
+</div>
+        <div class="sub-tab-content" id="upgrades-content" style="display:none;">
+    <div class="upgrade-card">
+     <h3>新时代</h3>
+     <p>价格: 100 反物质</p>
+     <p>效果: 物质获取 ×2</p>
+     <button id="newEraButton" class="buyUpgrade">购买升级</button>
+  </div>
+  <div class="upgrade-card">
+  </div>
+<div class="upgrade-card">
+  </div>
+</div>
+        <div class="sub-tab-content" id="collapse-content" style="display:none;">
+            <div id="collapseUnlockSection" style="text-align:center;">
+                <button id="unlockCollapseBtn" style="padding:10px 30px; font-size:18px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px;">使用1000反物质解锁坍缩</button>
+            </div>
+            <div id="collapseMainSection" style="display:none; text-align:center;">
+                <div style="font-size:20px; color:#ff4444; margin-bottom:12px;">湮灭能量: <span id="annihilationEnergy">0</span></div>
+                <button id="doCollapseBtn" style="padding:10px 30px; font-size:18px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px;">坍缩一切，获得湮灭能量</button>
+                <div style="margin-top:10px; color:#aaa; font-size:15px;">湮灭能量会提升物质每秒产量倍率</div>
+                <div id="annihilationBonus" style="margin-top:5px; color:#00ff99; font-size:16px;"></div>
             </div>
         </div>
+        <div class="sub-tab-content" id="challenge-content" style="display:none; text-align:center;">
+    <div id="challengeUnlockSection">
+        <button id="unlockChallengeBtn2" style="padding:10px 30px; font-size:18px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px;">使用5000反物质解锁挑战</button>
+    </div>
+    <div id="challengeMainSection" style="display:none; margin-top:32px; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; align-items:flex-start; min-height:480px;">
+        <!-- 第一个挑战卡片 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第一个挑战：升级无效</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+在挑战期间，密度和压缩物质升级无效，扩大仓库也无效。增强器仍然有效。
+目标：达到5e8物质。
+            </div>
+            <div id="challenge1Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge1Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge1Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第二个挑战卡片 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第二个挑战：软上限极巨</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+在挑战期间，软上限的最后一个乘数为3，扩大仓库升级被禁用。
+目标：达到5e8物质。
+            </div>
+            <div id="challenge2Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge2Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge2Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第三个挑战卡片 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第三个挑战：双重打击</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+在挑战期间，前两个挑战的减益同时出现：密度和压缩物质升级无效 + 软上限极巨。增强器仍然有效。
+目标：达到5e8物质。
+            </div>
+            <div id="challenge3Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge3Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge3Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 挑战完成提示 -->
+        <div id="challengeCompleteArea" style="display:none; color:#00ff99; font-size:16px; margin-top:18px; text-align:center; width:100%;">挑战完成！奖励：密度和压缩物质升级效果×2（密度×4，压缩物质sqrt(log(matter))×2，扩大仓库容量0.05）</div>
+    </div>
+</div>
     </div>
     <div class="tab-content" id="upgradesTab" style="display: none;">
         <h1>升级</h1>
@@ -425,1165 +434,113 @@
             <p>价格: 500物质</p>
             <p>效果: 物质产量乘以√log(物质)</p>
             <button id="buyCompressMatter">购买升级</button>
-        </div>
+              </div>
         <div class="upgrade-card">
             <h3>扩大仓库</h3>
             <p>价格: 1e8物质</p>
-            <p>效果: 削弱软上限效果，*0.5改成*0.2</p>
+            <p>效果: 软上限削弱系数*0.1</p>
             <button id="buyExpandWarehouse">购买升级</button>
         </div>
-    </div>
-    <div id="softCapNotice" style="display: none; color: red;">软上限提示内容</div>
-    <div id="softCapWarning" style="display: none;"></div>
-
-
-    <!-- 设置选项卡内容 -->
-    <div class="tab-content" id="settingsTab" style="display: none;">
-        <h1>设置</h1>
-        <div class="settings-container">
-            <div class="setting-item">
-                <button id="cloudSave">手动存档（云端）</button>
-            </div>
-            <div class="setting-item">
-                <button id="fileSave">手动存档（文件）</button>
-            </div>
-            <div class="setting-item">
-                <input type="file" id="fileImport" accept=".load" style="display: none;">
-                <button id="importButton">导入</button>
-            </div>
-            <div class="setting-item">
-                <label>
-                    <input type="checkbox" id="autoSaveToggle" checked> 开启自动存档 (每15秒)
-                </label>
-            </div>
-            <div class="setting-item">
-                <button id="deleteSave" style="background: linear-gradient(45deg, var(--danger), #991b1b);">删除存档</button>
-            </div>
-        </div>
-    </div>
+      </div>
 
     <!-- 物质选项卡内容 -->
     <div class="tab-content" id="matterTab">
 <h1>物质放置</h1>
     <div class="game-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; max-width: 1200px; margin: 0 auto;">
     <div class="stat-box">
-        <div>当前物质: <span id="matter">10</span></div>
-        <div>每秒生成: <span id="production">0</span></div>
+        <div>当前物质: <span id="currentMatter">10</span></div>
+        <div>每秒生成: <span id="matterPerSecond">0</span></div>
     </div>
     <div class="stat-box">
         <div>物质生成器: <span id="generatorCount">0</span></div>
         <div>成本: <span id="generatorCost">10</span></div>
-        <button id="buyGenerator">购买生成器</button>
+        <button id="buyGenerator" class="buyUpgrade">购买生成器</button>
     </div>
     <div class="stat-box">
         <div>物质增强器: <span id="enhancerCount">0</span></div>
         <div>成本: <span id="enhancerCost">100</span></div>
-        <button id="buyEnhancer">购买增强器</button>
+        <button id="buyEnhancer" class="buyUpgrade">购买增强器</button>
     </div>
-    <div class="stat-box">
-        <div>黑洞次数: <span id="blackHoleCount">0</span></div>
-        <div>黑洞增益: <span id="blackHoleBonus">1</span></div>
-        <div>黑洞成本: <span id="blackHoleCost">1e30</span></div>
-        <button id="blackHole" class="black-hole-btn">触发黑洞</button>
-<div id="blackHoleModal" class="modal">
-  <div class="modal-content">
-    <div class="black-hole-animation">
-      <div class="event-horizon"></div>
-      <div class="particles"></div>
-    </div>
-    <p>这个升级会重置一切，你确定吗？</p>
-    <div class="modal-buttons">
-      <button id="confirmBlackHole">确定</button>
-      <button id="cancelBlackHole">取消</button>
-    </div>
-  </div>
 </div>
-    </div>
+</div>
 
-</div>
-<div class="tab-content" id="settingsTab" style="display: none;">
-        <div class="settings-container" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); padding: 35px; border-radius: 24px; box-shadow: 0 15px 45px rgba(0, 0, 0, 0.45); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); max-width: 800px; margin: 20px auto; border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(15px); transform: translateY(0);">
-            <h2 style="color: white; margin-bottom: 25px; font-size: 1.8rem; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">游戏设置</h2>
-            <div class="setting-item" style="margin: 20px 0; padding: 22px; background: rgba(255,255,255,0.08); border-radius: 16px; backdrop-filter: blur(10px); transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1);">
-                <h3 style="color: #ddd; margin-bottom: 10px;">存档功能</h3>
-                <button id="saveGame" style="margin-right: 15px; background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); transform: translateY(0);">保存游戏</button>
-                <button id="loadGame" style="margin-right: 15px; background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3); transform: translateY(0);">加载游戏</button>
-                <button id="deleteSave" style="background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3); transform: translateY(0);">删除存档</button>
+    <!-- 设置选项卡内容 -->
+    <div class="tab-content" id="settingsTab" style="display: none;">
+        <div class="sub-tabs">
+            <div class="sub-tab active" data-subtab="save">存档</div>
+            <div class="sub-tab" data-subtab="about">关于</div>
+            <div class="sub-tab" data-subtab="author">作者</div>
+            <div class="sub-tab" data-subtab="misc">杂项</div>
+        </div>
+        <div class="sub-tab-content" id="save-content">
+        <h1>存档设置</h1>
+        <div class="settings-container">
+            <div class="setting-item">
+                <button id="saveGame">手动存档</button>
+                <p>立即保存当前游戏进度到浏览器</p>
             </div>
-            <div class="setting-item" style="margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.1);">
-                <h3 style="color: #f0f4f8; margin-bottom: 15px; font-size: 1.25rem; font-weight: 600; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">开发者模式</h3>
-                <div id="developerModeContainer" style="display: block;">
-                    <input type="text" id="matterInput" placeholder="输入物质数量" style="background: #334155; border: 1px solid var(--primary); color: white; padding: 8px; border-radius: 8px; margin-right: 10px;">
-                    <button onclick="setMatter()">设置物质</button>
-                </div>
+            <div class="setting-item">
+                <button id="loadGame">加载存档</button>
+                <p>从浏览器中加载最近保存的进度</p>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="autoSaveToggle" checked> 启用自动存档
+                </label>
+                <p>每5秒自动保存游戏进度</p>
+            </div>
+            <div class="setting-item">
+                <button id="deleteSave" style="background: #ff4444; color: white;">删除存档</button>
+                <p>清除所有保存的游戏进度</p>
             </div>
         </div>
-    </div>
-    <script>
-        let autoSaveInterval = null;
-
-        // 页面加载时自动加载存档
-        document.addEventListener('DOMContentLoaded', () => {
-            const saveData = localStorage.getItem('matterldleSave');
-            if (saveData) {
-                try {
-                    const parsedData = JSON.parse(saveData);
-                    game.matter = new OmegaNum(parsedData.matter);
-                    lastResetMatter = new OmegaNum(parsedData.lastResetMatter);
-                    game.generatorCount = new OmegaNum(parsedData.generatorCount);
-                    game.enhancerCount = new OmegaNum(parsedData.enhancerCount);
-                    game.blackHoleCount = new OmegaNum(parsedData.blackHoleCount);
-                    game.blackHoleBonus = new OmegaNum(parsedData.blackHoleBonus);
-                    game.enhancerBonus = new OmegaNum(parsedData.enhancerBonus);
-                    generatorCost = new OmegaNum(parsedData.generatorCost);
-                    enhancerCost = new OmegaNum(parsedData.enhancerCost);
-                    game.blackHoleCost = new OmegaNum(parsedData.blackHoleCost);
-                    densityUpgradePurchased = parsedData.densityUpgradePurchased;
-                    compressMatterPurchased = parsedData.compressMatterPurchased;
-                    expandWarehousePurchased = parsedData.expandWarehousePurchased;
-                    antimatterResetCount = new OmegaNum(parsedData.antimatterResetCount);
-                    antimatter = new OmegaNum(parsedData.antimatter);
-                    updateUI();
-                } catch (e) {
-                    console.error('加载存档失败:', e);
-                }
-            }
-            
-            // 初始化自动存档
-            const autoSaveToggle = document.getElementById('autoSaveToggle');
-            if (autoSaveToggle && autoSaveToggle.checked) {
-                autoSaveInterval = setInterval(autoSaveGame, 15000);
-            }
-        });
-        
-        // 自动存档函数
-        function autoSaveGame() {
-            if (typeof saveGame === 'function') {
-                saveGame();
-                showNotification('自动存档成功', 'success');
-            } else {
-                localStorage.setItem('matterldleSave', JSON.stringify({
-                    lastResetMatter: lastResetMatter.toString(),
-                    matter: game.matter.toString(),
-                    generatorCount: game.generatorCount.toString(),
-                    enhancerCount: game.enhancerCount.toString(),
-                    blackHoleCount: game.blackHoleCount.toString(),
-                    blackHoleBonus: game.blackHoleBonus.toString(),
-                    enhancerBonus: game.enhancerBonus.toString(),
-                    generatorCost: generatorCost.toString(),
-                    enhancerCost: enhancerCost.toString(),
-                    blackHoleCost: game.blackHoleCost.toString(),
-                    densityUpgradePurchased,
-                    compressMatterPurchased,
-                    expandWarehousePurchased,
-                    antimatterResetCount: antimatterResetCount.toString(),
-                    antimatter: antimatter.toString()
-                }));
-                showNotification('自动存档成功', 'success');
-            }
-        }
-        
-        // 更新重置物质需求和显示
-        function updateResetRequirement(resetCount = 1) {
-            // 一次重置一个始终为 5e8 物质
-            resetMatterRequirement = new OmegaNum('5e8');
-            if (resetCount > 1) {
-                resetMatterRequirement = resetMatterRequirement.mul(resetCount).pow(1.1);
-            }
-            document.getElementById('nextResetMatter').textContent = formatOmegaNum(resetMatterRequirement);
-        }
-
-// 确认反物质重置
-        document.getElementById('confirmAntimatter')?.addEventListener('click', () => {
-            // 在重置前记录当前物质值
-            const preResetMatter = game.matter;
-            
-            // 重置除反物质外的一切
-            game.matter = new OmegaNum(10);
-            game.generatorCount = new OmegaNum(0);
-            game.enhancerCount = new OmegaNum(0);
-            game.blackHoleCount = new OmegaNum(0);
-            game.blackHoleBonus = new OmegaNum(1);
-            game.enhancerBonus = new OmegaNum(1);
-            generatorCost = new OmegaNum(10);
-            enhancerCost = new OmegaNum(100);
-            blackHoleCost = new OmegaNum(1e30);
-            game.generatorCost = generatorCost;
-            game.enhancerCost = enhancerCost;
-            game.blackHoleCost = blackHoleCost;
-            densityUpgradePurchased = false;
-            compressMatterPurchased = false;
-            expandWarehousePurchased = false;
-            
-            if (lastResetMatter.eq(0)) {
-                // 第一次强制重置，只获得 1 个反物质
-                antimatter = antimatter.add(1);
-            } else {
-                // 后续重置按物质数量计算
-                const gain = preResetMatter.sub(lastResetMatter);
-                const resetGain = gain.div(resetMatterRequirement).floor();
-                antimatter = antimatter.add(resetGain.gt(0) ? resetGain : 1);
-            }
-            antimatterUnlocked = true;
-            
-            document.getElementById('antimatter').textContent = formatOmegaNum(antimatter);
-            lastResetMatter = preResetMatter;
-            updateResetRequirement();
-            document.getElementById('nextResetMatter').textContent = formatOmegaNum(resetMatterRequirement);
-            const resetGain = lastResetMatter.eq(0) ? new OmegaNum(1) : preResetMatter.sub(lastResetMatter);
-                document.getElementById('resetGain').textContent = formatOmegaNum(resetGain);
-                document.getElementById('resetGainSpan').textContent = formatOmegaNum(resetGain);
-            if (antimatterUnlocked) {
-                document.getElementById('resetForAntimatter').style.display = 'block';
-            }
-            document.getElementById('antimatterModal').style.display = 'none';
-            updateUI();
-            updateResetButton();
-        });
-
-        // 检查是否能进行反物质重置并更新按钮状态
-        function updateResetButton() {
-            const resetButton = document.getElementById('resetForAntimatter');
-            if (game.matter.gte(resetMatterRequirement)) {
-                resetButton.disabled = false;
-            } else {
-                resetButton.disabled = true;
-            }
-        }
-
-        // 重置获取反物质按钮事件
-        document.getElementById('resetForAntimatter')?.addEventListener('click', () => {
-            if (game.matter.gte(resetMatterRequirement)) {
-                if (lastResetMatter.eq(0)) {
-                    // 第一次强制重置，只获得 1 个反物质
-                    antimatter = antimatter.add(1);
-                } else {
-                    // 后续重置按物质数量计算
-                    const gain = game.matter.sub(lastResetMatter);
-                    const resetGain = gain.div(resetMatterRequirement).floor();
-                    antimatter = antimatter.add(resetGain.gt(0) ? resetGain : 1);
-                }
-                const preResetMatter = game.matter;
-                game.matter = new OmegaNum(10);
-                lastResetMatter = preResetMatter;
-                game.generatorCount = new OmegaNum(0);
-                game.enhancerCount = new OmegaNum(0);
-                // 移除黑洞相关重置，避免重置反物质重置价格
-                // game.blackHoleCount = new OmegaNum(0);
-                // game.blackHoleBonus = new OmegaNum(1);
-                // blackHoleCost = new OmegaNum(1e30);
-                // game.blackHoleCost = blackHoleCost;
-                generatorCost = new OmegaNum(10);
-                enhancerCost = new OmegaNum(100);
-                game.generatorCost = generatorCost;
-                game.enhancerCost = enhancerCost;
-                densityUpgradePurchased = false;
-                compressMatterPurchased = false;
-                expandWarehousePurchased = false;
-                updateResetRequirement();
-                document.getElementById('antimatter').textContent = formatOmegaNum(antimatter);
-                antimatterResetCount = antimatterResetCount.add(1);
-                
-                // 显示反物质选项卡
-                document.getElementById('antimatterTab').style.display = 'block';
-                
-                // 更新升级按钮状态
-                updateUpgradeButtons();
-                
-                const resetGain = lastResetMatter.eq(0) ? new OmegaNum(1) : preResetMatter.sub(lastResetMatter);
-                document.getElementById('resetGain').textContent = formatOmegaNum(resetGain);
-                document.getElementById('resetGainSpan').textContent = formatOmegaNum(resetGain);
-                localStorage.setItem('matterldleSave', JSON.stringify({
-                    matter: game.matter.toString(),
-                    generatorCount: game.generatorCount.toString(),
-                    enhancerCount: game.enhancerCount.toString(),
-                    blackHoleCount: game.blackHoleCount.toString(),
-                    blackHoleBonus: game.blackHoleBonus.toString(),
-                    enhancerBonus: game.enhancerBonus.toString(),
-                    generatorCost: generatorCost.toString(),
-                    enhancerCost: enhancerCost.toString(),
-                    blackHoleCost: game.blackHoleCost.toString(),
-                    densityUpgradePurchased,
-                    compressMatterPurchased,
-                    expandWarehousePurchased,
-                    antimatterResetCount: antimatterResetCount.toString(),
-                    antimatter: antimatter.toString()
-                }));
-                updateUI();
-                updateResetButton();
-            }
-        });
-
-        // 统一的选项卡切换功能
-        document.addEventListener('DOMContentLoaded', function() {
-            // 自动存档开关监听
-            const autoSaveToggle = document.getElementById('autoSaveToggle');
-            autoSaveToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    autoSaveInterval = setInterval(autoSaveGame, 15000);
-                } else {
-                    clearInterval(autoSaveInterval);
-                }
-            });
-            
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    // 移除所有选项卡的active类
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // 隐藏所有内容
-                    tabContents.forEach(content => {
-                        content.style.display = 'none';
-                    });
-                    
-                    // 激活当前选项卡
-                    this.classList.add('active');
-                    const tabId = this.getAttribute('data-tab');
-                    const tabContent = document.getElementById(tabId + 'Tab');
-                    if (tabContent) {
-                        tabContent.style.display = 'block';
-                    }
-                });
-            });
-            
-            // 初始化默认显示物质选项卡
-            document.querySelector('.tab[data-tab="matter"]').click();
-            // 在确保 game 初始化后调用更新按钮状态
-            updateResetButton();
-        });
-        
-        // 删除存档功能
-        document.getElementById('deleteSave')?.addEventListener('click', () => {
-            if (confirm('确定要删除存档吗？此操作不可撤销。')) {
-                localStorage.removeItem('matterldleSave');
-                alert('存档已删除');
-                // 简单重置部分游戏状态
-                game.matter = new OmegaNum(10);
-                game.generatorCount = new OmegaNum(0);
-                game.enhancerCount = new OmegaNum(0);
-                game.blackHoleCount = new OmegaNum(0);
-                game.blackHoleBonus = new OmegaNum(1);
-                game.enhancerBonus = new OmegaNum(1);
-                generatorCost = new OmegaNum(10);
-                enhancerCost = new OmegaNum(100);
-                game.blackHoleCost = new OmegaNum(1e30);
-                densityUpgradePurchased = false;
-                compressMatterPurchased = false;
-                expandWarehousePurchased = false;
-                antimatterResetCount = new OmegaNum(0);
-                antimatter = new OmegaNum(0);
-                updateUI();
-            }
-        });
-        
-        // 在页面加载时初始化升级按钮状态
-        let matterMultiplier = 1;
-        let antimatter = new OmegaNum(0);
-        let antimatterUnlocked = false;
-        let resetMatterRequirement = new OmegaNum('5e8');
-        let lastResetMatter = new OmegaNum(0);
-        let antimatterResetCount = new OmegaNum(0);
-
-        // 页面加载时检查反物质选项卡是否显示
-        document.addEventListener('DOMContentLoaded', () => {
-            // 初始化升级按钮状态
-            updateUpgradeButtons();
-            
-            if (antimatterResetCount.gt(0)) {
-                document.getElementById('antimatterTab').style.display = 'block';
-            }
-        });
-        // 在物质变化时更新按钮状态
-        function updateMatterDisplay() {
-            // 原有的物质显示逻辑...
-            updateUpgradeButtons(); // 更新升级按钮状态
-            updateResetButton();    // 更新反物质重置按钮状态
-        }
-        // 页面加载时初始化选项卡
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化选项卡显示
-        function showTab(tabId) {
-            // 移除所有选项卡的active类
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            // 隐藏所有内容
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            
-            // 激活指定选项卡
-            const tab = document.querySelector(`.tab[data-tab="${tabId}"]`);
-            if (tab) {
-                tab.classList.add('active');
-                const tabContent = document.getElementById(`${tabId}Tab`);
-                if (tabContent) {
-                    tabContent.style.display = 'block';
-                }
-            }
-        }
-        
-        // 初始化默认显示物质选项卡
-        showTab('matter');
-        
-        // 为所有选项卡添加点击事件
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                showTab(tabId);
-            });
-        });
-        });
-
-        // 通知提示功能
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            notification.style.position = 'fixed';
-            notification.style.bottom = '20px';
-            notification.style.right = '20px';
-            notification.style.padding = '12px 20px';
-            notification.style.borderRadius = '8px';
-            notification.style.color = 'white';
-            notification.style.zIndex = '1000';
-            notification.style.opacity = '0';
-            notification.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            notification.style.transform = 'translateY(20px)';
-            notification.style.backgroundColor = type === 'success' ? '#4CAF50' : '#f44336';
-            
-            document.body.appendChild(notification);
-            
-            // 显示动画
-            setTimeout(() => {
-                notification.style.opacity = '1';
-                notification.style.transform = 'translateY(0)';
-            }, 10);
-            
-            // 3秒后移除通知
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                notification.style.transform = 'translateY(20px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // 升级功能实现
-let densityUpgradePurchased = false;
-let softCapEnabled = true;
-const densityUpgradeCost = new OmegaNum(100);
-const densityUpgradeMultiplier = 2;
-let compressMatterPurchased = false;
-const compressMatterCost = new OmegaNum(500);
-let expandWarehousePurchased = false;
-const expandWarehouseCost = new OmegaNum('1e8');
-
-function updateUpgradeButtons() {
-
-    // 原有升级按钮逻辑
-    const densityBuyButton = document.getElementById('buyDensityUpgrade');
-
-
-    if (densityBuyButton) {
-        if (densityUpgradePurchased) {
-            densityBuyButton.style.backgroundColor = '#3b82f6'; // 已购买蓝色
-            densityBuyButton.textContent = '已购买';
-            densityBuyButton.disabled = true;
-        } else if (game.matter.gte(densityUpgradeCost)) {
-            densityBuyButton.style.backgroundColor = '#10b981'; // 可购买绿色
-            densityBuyButton.disabled = false;
-        } else {
-            densityBuyButton.style.backgroundColor = '#cccccc'; // 买不起灰色
-            densityBuyButton.disabled = true;
-        }
-    }
-    
-    const compressBuyButton = document.getElementById('buyCompressMatter');
-    if (compressBuyButton) {
-        if (compressMatterPurchased) {
-            compressBuyButton.style.backgroundColor = '#3b82f6'; // 已购买蓝色
-            compressBuyButton.textContent = '已购买';
-            compressBuyButton.disabled = true;
-        } else if (game.matter.gte(compressMatterCost)) {
-            compressBuyButton.style.backgroundColor = '#10b981'; // 可购买绿色
-            compressBuyButton.disabled = false;
-        } else {
-            compressBuyButton.style.backgroundColor = '#cccccc'; // 买不起灰色
-            compressBuyButton.disabled = true;
-        }
-    }
-
-    const expandWarehouseButton = document.getElementById('buyExpandWarehouse');
-
-    if (expandWarehouseButton) {
-        if (typeof softCapEnabled !== 'undefined' && softCapEnabled) {
-            if (expandWarehousePurchased) {
-                expandWarehouseButton.style.backgroundColor = '#3b82f6'; // 已购买蓝色
-                expandWarehouseButton.textContent = '已购买';
-                expandWarehouseButton.disabled = true;
-            } else if (game.matter.gte(expandWarehouseCost)) {
-                expandWarehouseButton.style.backgroundColor = '#10b981'; // 可购买绿色
-                expandWarehouseButton.disabled = false;
-            } else {
-                expandWarehouseButton.style.backgroundColor = '#cccccc'; // 买不起灰色
-                expandWarehouseButton.disabled = true;
-            }
-        } else {
-            expandWarehouseButton.style.display = 'none';
-        }
-    }
-    
-    if (densityBuyButton) {
-        if (densityUpgradePurchased) {
-            densityBuyButton.style.backgroundColor = '#3b82f6'; // 已购买蓝色
-            densityBuyButton.textContent = '已购买';
-            densityBuyButton.disabled = true;
-        } else if (game.matter.gte(densityUpgradeCost)) {
-            densityBuyButton.style.backgroundColor = '#10b981'; // 可购买绿色
-            densityBuyButton.disabled = false;
-        } else {
-            densityBuyButton.style.backgroundColor = '#cccccc'; // 买不起灰色
-            densityBuyButton.disabled = true;
-        }
-    }
-}
-
-document.getElementById('buyDensityUpgrade')?.addEventListener('click', () => {
-    if (!densityUpgradePurchased && game.matter.gte(densityUpgradeCost)) {
-        game.matter = game.matter.sub(densityUpgradeCost);
-        densityUpgradePurchased = true;
-        matterMultiplier = (matterMultiplier || 1) * densityUpgradeMultiplier;
-        updateUpgradeButtons();
-        updateMatterDisplay();
-        showNotification('成功购买密度过高升级！');
-    }
-});
-
-document.getElementById('buyExpandWarehouse')?.addEventListener('click', () => {
-    if (typeof softCapEnabled !== 'undefined' && softCapEnabled && !expandWarehousePurchased && game.matter.gte(expandWarehouseCost)) {
-        game.matter = game.matter.sub(expandWarehouseCost);
-        expandWarehousePurchased = true;
-        softCapMultiplier = 0.2; // 削弱软上限效果
-        updateUpgradeButtons();
-        updateMatterDisplay();
-        showNotification('成功购买扩大仓库升级！');
-    }
-});
-
-document.getElementById('buyCompressMatter')?.addEventListener('click', () => {
-    if (!compressMatterPurchased && game.matter.gte(compressMatterCost)) {
-        game.matter = game.matter.sub(compressMatterCost);
-        compressMatterPurchased = true;
-        // 计算根号log(物质)
-        const logValue = game.matter.log(10);
-        const sqrtLogValue = Math.sqrt(logValue);
-        game.matter = game.matter.mul(sqrtLogValue);
-        updateUpgradeButtons();
-        updateMatterDisplay();
-        showNotification('成功购买压缩物质升级！');
-    }
-});
-
-// 手动存档（云端）
-        // 云端存档导出
-        function cloudSave() {
-            try {
-                const serialized = serializeOmegaNums(game);
-                const saveData = btoa(JSON.stringify({
-                    version: 1.2,
-                    timestamp: Date.now(),
-                    gameData: serialized
-                }));
-                
-                const link = document.createElement('a');
-                link.href = `data:text/plain;base64,${saveData}`;
-                link.download = `matterldle_cloud_${Date.now()}.txt`;
-                link.click();
-                showNotification('云端存档导出成功', 'success');
-                return true;
-            } catch (e) {
-                console.error('云端导出失败:', e);
-                showNotification('导出失败: ' + e.message, 'error');
-                return false;
-            }
-        }
-
-        // 云端存档导入
-        document.getElementById('loadGame')?.addEventListener('click', () => {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.txt';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = () => {
-                    try {
-                        const { version, gameData } = JSON.parse(atob(reader.result));
-                        if (version < 1.2) throw new Error('不兼容的存档版本');
-                        
-                        const loaded = deserializeOmegaNums(gameData);
-                        Object.entries(loaded).forEach(([key, value]) => {
-                            if (game[key] instanceof OmegaNum) {
-                                game[key] = new OmegaNum(value);
-                            } else {
-                                game[key] = value;
-                            }
-                        });
-                        updateUI();
-                        showNotification('云端存档加载成功', 'success');
-                    } catch (error) {
-                        console.error('存档加载失败:', error);
-                        showNotification(`加载失败: ${error.message}`, 'error');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        });
-
-        // 定义需要序列化的 OmegaNum 属性
-        const OMEGA_NUM_PROPS = ['matter', 'generatorCount', 'enhancerCount', 'blackHoleCount', 'blackHoleBonus', 'enhancerBonus', 'generatorCost', 'enhancerCost', 'blackHoleCost', 'densityUpgradeCost', 'compressMatterCost', 'expandWarehouseCost'];
-
-        // 辅助函数：将游戏对象中的 OmegaNum 属性转换为 JSON
-        function serializeOmegaNums(gameObj) {
-            const serialized = { ...gameObj };
-            OMEGA_NUM_PROPS.forEach(prop => {
-                if (gameObj[prop]) {
-                    serialized[prop] = gameObj[prop].toJSON();
-                }
-            });
-            return serialized;
-        }
-
-        // 辅助函数：从 JSON 恢复游戏对象中的 OmegaNum 属性
-        function deserializeOmegaNums(savedGame) {
-            const newGame = { ...savedGame };
-            OMEGA_NUM_PROPS.forEach(prop => {
-                if (savedGame[prop] && typeof savedGame[prop] === 'object' && savedGame[prop] !== null) {
-                    // 检查是否为有效的 OmegaNum JSON 格式，假设 OmegaNum JSON 有特定属性 
-                    if (savedGame[prop].hasOwnProperty('v') || savedGame[prop].hasOwnProperty('e') || (savedGame[prop].hasOwnProperty('array') && savedGame[prop].hasOwnProperty('sign'))) {
-                        try {
-                            console.log(`尝试反序列化 ${prop}，数据为:`, savedGame[prop]);
-                            if (typeof savedGame[prop] !== 'object' || savedGame[prop] === null) {
-                                throw new Error('Invalid argument: Expected Object');
-                            }
-                            if (!savedGame[prop].constructor || savedGame[prop].constructor.name !== 'Object') {
-                                throw new Error('Invalid argument: Expected plain object');
-                            }
-                            if (savedGame[prop].hasOwnProperty('array') && (!Array.isArray(savedGame[prop].array) || savedGame[prop].array.length === 0)) {
-                                throw new Error('Invalid argument: array must be a non-empty array');
-                            }
-                            if (savedGame[prop].hasOwnProperty('sign') && (typeof savedGame[prop].sign !== 'number')) {
-                                throw new Error('Invalid argument: sign must be a number');
-                            }
-                            if (savedGame[prop].hasOwnProperty('array')) {
-                                for (const item of savedGame[prop].array) {
-                                    if (typeof item !== 'number') {
-                                        throw new Error('Invalid argument: array elements must be numbers');
-                                    }
-                                }
-                            }
-                            if (savedGame[prop].hasOwnProperty('sign') && ![-1, 0, 1].includes(savedGame[prop].sign)) {
-                                throw new Error('Invalid argument: sign must be -1, 0, or 1');
-                            }
-                            newGame[prop] = OmegaNum.fromJSON(savedGame[prop]);
-                        } catch (e) {
-                            console.error(`反序列化 ${prop} 失败:`, e);
-                            throw new Error(`存档数据损坏: ${prop} 属性无效`);
-                        }
-                    } else {
-                        console.error(`反序列化 ${prop} 失败: 无效的 OmegaNum JSON 格式，实际值为:`, savedGame[prop]);
-                        throw new Error(`存档数据损坏: ${prop} 属性格式无效，实际值为: ${JSON.stringify(savedGame[prop])}`);
-                    }
-                }
-            });
-            return newGame;
-        }
-
-        // 辅助函数：验证文件大小是否合理
-        function isFileSizeValid(file) {
-            const MAX_FILE_SIZE = 1024 * 1024; // 1MB
-            if (file.size > MAX_FILE_SIZE) {
-                throw new Error('存档文件过大，请检查文件完整性');
-            }
-            return true;
-        }
-
-        // 手动存档（文件）
-        async function fileSave() {
-            try {
-                const gameData = JSON.stringify({
-                    ...serializeOmegaNums(game),
-                    densityUpgradePurchased: densityUpgradePurchased,
-                    compressMatterPurchased: compressMatterPurchased,
-                    expandWarehousePurchased: expandWarehousePurchased
-                });
-                if (!gameData) {
-                    throw new Error('游戏数据为空，无法存档');
-                }
-                
-                const blob = new Blob([gameData], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'matterldle.load';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showNotification('文件存档成功');
-                return true;
-            } catch (e) {
-                console.error('文件保存失败，错误详情:', e);
-                showNotification(`文件保存失败: ${e.message}`, 'error');
-                return false;
-            }
-        }
-
-        // 定义动画帧ID
-        let animationFrameId = null;
-
-        // 导入存档
-        const fileImportInput = document.getElementById('fileImport');
-        function fileImport() {
-            fileImportInput.click();
-        }
-
-        fileImportInput.addEventListener('change', async function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                try {
-                    isFileSizeValid(file);
-                    
-                    const content = await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = (event) => resolve(event.target.result);
-                        reader.onerror = reject;
-                        reader.readAsText(file);
-                    });
-                    
-                    if (!content) {
-                        throw new Error('存档文件内容为空');
-                    }
-                    
-                    const savedGame = JSON.parse(String(content));
-                    console.log('存档数据:', savedGame);
-                    
-                    const REQUIRED_PROPS = ['matter', 'generatorCount', 'blackHoleBonus', 'blackHoleCost', 'blackHoleCount'];
-                    const missingProps = REQUIRED_PROPS.filter(prop => !savedGame.hasOwnProperty(prop));
-                    if (missingProps.length > 0) {
-                        throw new Error(`存档数据不完整，缺少以下属性: ${missingProps.join(', ')}`);
-                    }
-                    
-                    if (typeof savedGame !== 'object' || savedGame === null) {
-                        throw new Error('存档数据格式无效，应为对象');
-                    }
-                    
-                    // 完全重置游戏状态引用
-                    const newGame = {
-                        developerMode: savedGame.developerMode || false,
-                        passwordBuffer: '',
-                        lastSave: Date.now(),
-                        ...deserializeOmegaNums(savedGame),
-                        compressMatterPurchased: savedGame.compressMatterPurchased || false,
-                        expandWarehousePurchased: savedGame.expandWarehousePurchased || false,
-                        softCapEnabled: savedGame.softCapEnabled || true,
-                        softCapMultiplier: savedGame.softCapMultiplier || 0.5,
-                        softCap: savedGame.softCap || new OmegaNum('1e1000'),
-                        softCapThreshold: savedGame.softCapThreshold || new OmegaNum('1e999'),
-                        softCapDecreaseRate: savedGame.softCapDecreaseRate || 0.001,
-                    };
-                    game = newGame;
-                    // 同步全局价格变量
-                    generatorCost = newGame.generatorCost;
-                    enhancerCost = newGame.enhancerCost;
-                    blackHoleCost = newGame.blackHoleCost;
-                    // 立即更新价格显示
-                    updateUI();
-                    
-                    // 重置游戏循环
-                    cancelAnimationFrame(animationFrameId);
-                    lastTime = performance.now();
-                    animationFrameId = requestAnimationFrame(gameLoop);
-                    
-                    // 强制更新所有UI组件
-                    updateUI();
-                    updateUpgradeButtons();
-                    updateMatterDisplay();
-                    showNotification('存档导入成功');
-                } catch (e) {
-                    const errorMsg = e instanceof Error ? e.message : String(e);
-                    console.error('导入失败，错误详情:', {
-                        error: e,
-                        fileSize: file.size,
-                        fileType: file.type
-                    });
-                    showNotification(`导入失败: ${errorMsg}`, 'error');
-                }
-            }
-            e.target.value = '';
-        });
-
-        // 绑定按钮事件
-        document.getElementById('cloudSave')?.addEventListener('click', cloudSave);
-        document.getElementById('fileSave')?.addEventListener('click', fileSave);
-        document.getElementById('importButton')?.addEventListener('click', fileImport);
-
-        // 初始化选项卡显示
-        document.getElementById('matterTab').style.display = 'block';
-        document.getElementById('settingsTab').style.display = 'none';
-
-        // 初始化游戏状态
-        let game = {
-            developerMode: false,
-            passwordBuffer: '',
-            lastSave: Date.now(),
-            matter: new OmegaNum(10),
-            generatorCount: new OmegaNum(0),
-    enhancerCount: new OmegaNum(0),
-    blackHoleCount: new OmegaNum(0),
-    blackHoleBonus: new OmegaNum(1),
-    enhancerBonus: new OmegaNum(1),
-    generatorCost: new OmegaNum(10),
-    enhancerCost: new OmegaNum(100),
-    blackHoleCost: new OmegaNum(1e30),
-    densityUpgradeCost: new OmegaNum(100),
-    compressMatterCost: new OmegaNum(500),
-    expandWarehouseCost: new OmegaNum('1e8')
-        };
-
-        // 检查开发者模式状态，更新设置面板显示
-        if (game.developerMode) {
-            document.getElementById('developerModeContainer').style.display = 'block';
-        }
-
-
-        // 声明并从游戏对象获取升级成本
-        let generatorCost = game.generatorCost;
-        let enhancerCost = game.enhancerCost;
-        let blackHoleCost = game.blackHoleCost;
-
-        // 更新 UI
-        function updateUI() {
-            if (antimatterUnlocked) {
-                document.querySelector('.tab[data-tab="antimatter"]').style.display = 'block';
-            }
-            document.getElementById('blackHole').disabled = game.matter.lt(blackHoleCost);
-            document.getElementById('blackHoleCost').textContent = formatOmegaNum(blackHoleCost);
-            document.getElementById('matter').textContent = formatOmegaNum(game.matter);
-        document.getElementById('production').textContent = formatOmegaNum(calculateProduction());
-        document.getElementById('enhancerCost').textContent = formatOmegaNum(enhancerCost);
-        document.getElementById('blackHoleCost').textContent = formatOmegaNum(blackHoleCost);
-            const production = calculateProduction();
-            document.getElementById('production').textContent = formatOmegaNum(calculateProduction()) + '/s';
-            document.getElementById('generatorCount').textContent = game.generatorCount.toString();
-            document.getElementById('generatorCost').textContent = formatOmegaNum(generatorCost);
-            document.getElementById('enhancerCount').textContent = game.enhancerCount.toString();
-            document.getElementById('enhancerCost').textContent = formatOmegaNum(enhancerCost);
-            document.getElementById('blackHoleCount').textContent = game.blackHoleCount.toString();
-            document.getElementById('blackHoleBonus').textContent = game.blackHoleBonus.toString();
-            document.getElementById('antimatter').textContent = formatOmegaNum(antimatter);
-
-            // 按钮状态
-            document.getElementById('buyGenerator').disabled = game.matter.lt(generatorCost);
-            document.getElementById('buyEnhancer').disabled = game.matter.lt(enhancerCost);
-            updateMatterDisplay();
-        }
-
-        // 数值格式化函数
-function formatOmegaNum(num, round = true) {
-    // 如果不需要四舍五入，直接返回原始值
-    if (!round) return num.toString();
-    // 四舍五入处理
-    num = num.round();
-    // 所有数值四舍五入处理
-    num = num.round();
-    // 四舍五入并保留两位小数
-    const roundedNum = num.round(2);
-    if (roundedNum.lt(1e6)) {
-        return roundedNum.toNumber().toLocaleString();
-    } else {
-        return roundedNum.toExponential(2).replace('+', '');
-    }
-}
-
-// 计算每秒生成物质
-        function calculateProduction() {
-            let production = game.generatorCount.pow(game.blackHoleBonus).mul(game.enhancerBonus).mul(matterMultiplier || 1);
-            if (compressMatterPurchased && !game.matter.eq(0)) {
-                const logValue = game.matter.log(10);
-                const sqrtLogValue = Math.sqrt(logValue);
-                production = production.mul(sqrtLogValue);
-            }
-            
-            // 软上限机制
-            if (game.matter.gte(10000)) {
-                const matterAmount = game.matter.toNumber();
-                production = production.div(1 + Math.log(matterAmount / 10000) * 0.5);
-                document.getElementById('softCapWarning')?.remove();
-                const warningElement = document.createElement('div');
-                warningElement.id = 'softCapWarning';
-                warningElement.textContent = '由于你把所有物质塞在一个小地方，物质密度过大，产量被软上限限制！';
-                warningElement.style.color = 'while';
-                warningElement.style.marginBottom = '2px';
-                const matterBox = document.querySelector('.stat-box:has(#matter)');
-                if (matterBox) {
-                    matterBox.insertBefore(warningElement, matterBox.firstChild);
-                }
-            } else {
-                document.getElementById('softCapWarning')?.remove();
-            }
-            // 反物质增幅逻辑
-            production = production.mul(new OmegaNum(1).add(antimatter.div(2)));
-            return production;
-        }
-
-        // 修改数值格式化函数
-function formatOmegaNum(num) {
-    if (num.lt(1e6)) {
-        const rounded = num.round(3).toNumber();
-        return rounded.toLocaleString();
-    } else {
-        return num.toExponential(3).replace('+', '');
-    }
-}
-
-        let lastTime = performance.now();
-
-        // 购买物质生成器
-        document.getElementById('buyGenerator').addEventListener('click', () => {
-            if (game.matter.gte(generatorCost)) {
-                game.matter = game.matter.sub(generatorCost);
-                game.generatorCount = game.generatorCount.add(1);
-                if (game.generatorCount.mod(10).eq(0)) {
-                    generatorCost = generatorCost.mul(10);
-                    game.generatorCost = generatorCost;
-                }
-                updateUI();
-            }
-        });
-
-        // 购买物质增强器
-        document.getElementById('buyEnhancer').addEventListener('click', () => {
-            if (game.matter.gte(enhancerCost)) {
-                game.matter = game.matter.sub(enhancerCost);
-                game.enhancerCount = game.enhancerCount.add(1);
-                const newBonus = new OmegaNum(2).mul(0.9).pow(game.enhancerCount.sub(1));
-                game.enhancerBonus = game.enhancerBonus.mul(newBonus.max(1.1));
-                // 修正后的指数增长公式
-                // 新增长公式：(原价格×2)^1.1
-// 根据价格阈值应用不同增长公式
-if (enhancerCost.gt(new OmegaNum(1e6))) {
-    enhancerCost = enhancerCost.mul(2).pow(1.5);
-} else {
-    enhancerCost = enhancerCost.mul(2).pow(1.1);
-}
-                game.enhancerCost = enhancerCost;
-                updateUI();
-            }
-        });
-
-        // 开发者模式密码检测
-        document.addEventListener('keydown', function(e) {
-            if (!game.developerMode) {
-                game.passwordBuffer += e.key;
-                if (game.passwordBuffer.length > 20) game.passwordBuffer = game.passwordBuffer.slice(-20);
-                if (game.passwordBuffer.includes('1209267andfu*kdang5')) {
-                    game.developerMode = true;
-                    alert('开发者模式已激活');
-                    showDeveloperPanel();
-                    game.passwordBuffer = '';
-                }
-            }
-        });
-
-        function showDeveloperPanel() {
-            const panel = document.createElement('div');
-            panel.id = 'developerPanel';
-            panel.style = 'position:fixed;top:20px;right:20px;background:#333;color:white;padding:15px;border-radius:5px;z-index:9999;';
-            panel.innerHTML = `
+        </div>
+        <div class="sub-tab-content" id="about-content" style="display:none;">
+            <!-- 关于内容区域 -->
+        </div>
+        <div class="sub-tab-content" id="author-content" style="display:none;">
+            <button style="background-color: red; color: white; padding: 10px 20px; font-size: 16px; margin: 20px;" onclick="window.open('https://afdian.tv/a/matterldle', '_blank')">支持开发者</button>
+            <div id="devModeEntry" style="margin-top: 20px;">
                 <h3>开发者模式</h3>
-                <div>
-                    <label>物质数量:</label>
-                    <input type='text' id='matterInput' style='width:150px;margin:5px;'>
-                    <button onclick='setMatter()'>设置</button>
-                </div>
-            `;
-            document.body.appendChild(panel);
-            document.getElementById('matterInput').value = game.matter.toString();
-        }
+                <input type="password" id="devModePassword" placeholder="输入开发者密码" style="padding: 5px; width: 180px;">
+                <button id="devModeBtn" style="margin-left: 8px;">激活</button>
+                <div id="devModeMsg" style="color: #ff4444; margin-top: 8px;"></div>
+            </div>
+        </div>
+        <div class="sub-tab-content" id="misc-content" style="display:none;">
+            <h1>杂项设置</h1>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="toggleOfflineMode"> 启用离线收益模式
+                </label>
+                <p>启动后物质将停止增长，记录当前时间</p>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="enableOfflineBonus"> 启用离线收益加成
+                </label>
+                <p>物质生成速度×1024，每秒消耗1023离线能量</p>
+            </div>
+            <div class="setting-item">
+                <p>当前离线能量: <span id="offlineEnergy">0</span></p>
+            </div>
+    </div>
 
-        function setMatter() {
-            const input = document.getElementById('matterInput').value;
-            const num = parseFloat(input);
-            if (!isNaN(num)) {
-                game.matter = new OmegaNum(num);
-                updateUI();
-            }
-        }
+    </div>
 
-        // 黑洞配置
-        blackHoleCost = new OmegaNum(1e30);
-        const BLACK_HOLE_GROWTH = new OmegaNum(1e50);
-
-        // 粒子动画系统
-        function createParticles() {
-            const blackHole = document.getElementById('blackHole');
-            const holeRect = blackHole.getBoundingClientRect();
-            const modalRect = document.getElementById('blackHoleModal').getBoundingClientRect();
-            const holeCenterX = holeRect.width / 2;
-            const holeCenterY = holeRect.height / 2;
-            const particleCount = 30;
-            const radius = Math.max(holeRect.width, holeRect.height) / 2 + 20;
-
-            // 清除现有粒子
-            document.querySelectorAll('.black-hole-particle').forEach(p => p.remove());
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('black-hole-particle');
-                particle.style.width = `${Math.random() * 4 + 2}px`;
-                particle.style.height = particle.style.width;
-
-                // 在黑洞周围随机生成粒子（极坐标转直角坐标）
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * radius;
-                const startX = Math.cos(angle) * distance;
-                const startY = Math.sin(angle) * distance;
-
-                // 设置初始位置变量
-                particle.style.setProperty('--start-x', `${startX}px`);
-                particle.style.setProperty('--start-y', `${startY}px`);
-
-                // 随机动画时长（1-3秒）
-                const duration = Math.random() * 2 + 1;
-                particle.style.animation = `attractToBlackHole ${duration}s ease-in forwards`;
-
-                blackHole.appendChild(particle);
-            }
-        }
-
-        // 触发黑洞
-        document.getElementById('blackHole').addEventListener('click', () => {
-            document.getElementById('blackHoleModal').style.display = 'block';
-            createParticles();
+    <script src="OmegaNum.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/antimatter.js"></script>
+    <script src="js/save.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/achievements.js"></script>
+    <script>
+        // 游戏初始化
+        window.addEventListener('load', () => {
+            Game.init();
+            UI.init();
         });
-
-        // 确认黑洞升级
-        // 修复黑洞确定按钮逻辑（确保物质足够时可点击）
-        document.getElementById('confirmBlackHole').addEventListener('click', function() { 
-            if (game.matter.gte(blackHoleCost)) { 
-                // 黑洞升级后物质变为10
-                game.matter = new OmegaNum(10); 
-                // 重置生成器和增强器数量（原代码中generators/enhancers数组未定义，改为直接操作game对象）
-                // 修复后逻辑
-                game.generatorCount = new OmegaNum(0);
-                game.enhancerCount = new OmegaNum(0);
-                generatorCost = new OmegaNum(10);
-                enhancerCost = new OmegaNum(100);
-                // 增益归0（除了黑洞）
-                game.generatorBonus = new OmegaNum(1); 
-                game.enhancerBonus = new OmegaNum(1); 
-                // 增加黑洞计数
-                game.blackHoleCount = game.blackHoleCount.add(1); 
-                // 黑洞增长率为每次升级 * 1e50
-                blackHoleCost = blackHoleCost.times(1e50);
-                game.blackHoleCost = blackHoleCost; 
-                // 更新黑洞增益
-                game.blackHoleBonus = new OmegaNum(1.5).pow(game.blackHoleCount); 
-                // 隐藏模态框
-                document.getElementById('blackHoleModal').style.display = 'none'; 
-                updateUI(); 
-            } 
-        }); 
-
-        // 取消操作
-        document.getElementById('cancelBlackHole').addEventListener('click', () => {
-            document.getElementById('blackHoleModal').style.display = 'none';
-        });
-            if(game.matter.gte(blackHoleCost)) {
-                game.matter = game.matter.sub(blackHoleCost);
-                game.blackHoleCount = game.blackHoleCount.add(1);
-                
-                // 指数增益公式：(1.5^黑洞次数) * 黑洞增长率
-                const newBonus = new OmegaNum(1.5).pow(game.blackHoleCount).mul(BLACK_HOLE_GROWTH);
-                game.blackHoleBonus = game.blackHoleBonus.mul(newBonus);
-                
-                // 价格增长公式：当前价格^1.5
-                blackHoleCost = blackHoleCost.pow(1.5).max(blackHoleCost.mul(10));
-                
-                // 重置基础生产设施
-                game.generatorCount = new OmegaNum(0);
-                game.enhancerCount = new OmegaNum(0);
-                generatorCost = new OmegaNum(10);
-                enhancerCost = new OmegaNum(100);
-                updateUI();
-            }
-// 原代码此处多余的右括号可能是代码编辑失误，推测此处无实际作用，予以移除
-// 新增存档加载
-function initGame() {
-    // ... existing code ...
-    game = {
-        matter: new OmegaNum(0),
-        generatorCount: new OmegaNum(0),
-        enhancerCount: new OmegaNum(0),
-        blackHoleCount: new OmegaNum(0),
-        blackHoleBonus: new OmegaNum(1),
-        enhancerBonus: new OmegaNum(1)
-    };
-    window.densityUpgradePurchased = false;
-    window.compressMatterPurchased = false;
-    window.expandWarehousePurchased = false;
-
-    // 完整存档加载（包含所有核心状态）
-        const saveData = localStorage.getItem('matterldleSave');
-        if (saveData) {
-            const parsed = JSON.parse(saveData);
-            game.matter = new OmegaNum(parsed.matter);
-            game.generatorCount = new OmegaNum(parsed.generatorCount);
-            game.enhancerCount = new OmegaNum(parsed.enhancerCount);
-            game.blackHoleCount = new OmegaNum(parsed.blackHoleCount);
-            game.blackHoleBonus = new OmegaNum(parsed.blackHoleBonus);
-            game.enhancerBonus = new OmegaNum(parsed.enhancerBonus);
-            generatorCost = new OmegaNum(parsed.generatorCost);
-            enhancerCost = new OmegaNum(parsed.enhancerCost);
-            blackHoleCost = new OmegaNum(parsed.blackHoleCost);
-            densityUpgradePurchased = parsed.densityUpgradePurchased || false;
-            compressMatterPurchased = parsed.compressMatterPurchased || false;
-            expandWarehousePurchased = parsed.expandWarehousePurchased || false;
-            antimatterResetCount = new OmegaNum(parsed.antimatterResetCount) || new OmegaNum(0);
-        }
-}
-
-// 修改数值格式化函数
-function formatOmegaNum(num) {
-    if (num.lt(1e6)) {
-        const rounded = num.round(3).toNumber();
-        return rounded.toLocaleString();
-    } else {
-        return num.toExponential(3).replace('+', '');
-    }
-}
-
-function gameLoop() {
-    const now = performance.now();
-    if (game.matter.gte(new OmegaNum('5e8')) && !antimatterUnlocked) {
-        document.getElementById('antimatterModal').style.display = 'flex';
-    }
-    const deltaTime = (now - lastTime) / 1000;
-    lastTime = now;
-    
-    const production = calculateProduction().mul(deltaTime);
-    game.matter = game.matter.add(production);
-    updateUI();
-    requestAnimationFrame(gameLoop);
-}
-
-        // 更新黑洞UI显示
-        document.getElementById('blackHoleCost').textContent = formatOmegaNum(blackHoleCost);
-
-        // 启动游戏
-        gameLoop();
     </script>
 </body>
 </html>
