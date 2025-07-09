@@ -8,6 +8,9 @@ class UI {
         lastUpdate: 0,
         throttleTime: 50 // 50ms节流
     };
+    // 新增：UI每10帧刷新一次
+    static frameCounter = 0;
+    static frameInterval = 10;
     
     static init() {
         this.cacheDOMElements();
@@ -453,6 +456,12 @@ class UI {
     }
 
     static updateUI() {
+        // 每10帧才刷新一次UI
+        this.frameCounter = (this.frameCounter + 1) % this.frameInterval;
+        if (this.frameCounter !== 0) {
+            requestAnimationFrame(() => UI.updateUI());
+            return;
+        }
         // 使用节流更新
         this.throttledUpdate(() => {
             if (typeof updateNewEraButtonState === 'function') updateNewEraButtonState();
