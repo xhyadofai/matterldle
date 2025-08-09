@@ -1,4 +1,6 @@
-d>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>物质放置：Antihole</title>
@@ -618,4 +620,633 @@ button:disabled {
     <div id="challengeMainSection" style="display:none; margin-top:32px; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; align-items:flex-start; min-height:480px;">
         <!-- 第一个挑战卡片 -->
         <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
-            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第1个挑战：升级无效</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                在挑战期间，密度和压缩物质升级无效，扩大仓库也无效。增强器仍然有效。
+                <br><br>
+                <strong>目标：</strong>达到2e8物质。
+                <br><br>
+                <strong>奖励：</strong>密度和压缩物质升级效果×2（密度×4，压缩物质sqrt(log(matter))×2，扩大仓库容量0.05）
+            </div>
+            <div id="challenge1Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge1Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge1Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第二个挑战卡片 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第2个挑战：软上限极巨</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                在挑战期间，软上限的最后一个乘数为3，扩大仓库升级被禁用。
+                <br><br>
+                <strong>目标：</strong>达到5e8物质。
+                <br><br>
+                <strong>奖励：</strong>软上限消失，物质不再受到仓库容量限制
+            </div>
+            <div id="challenge2Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge2Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge2Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第三个挑战卡片 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第3个挑战：双重打击</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                在挑战期间，前两个挑战的减益同时出现：密度和压缩物质升级无效 + 软上限极巨。增强器仍然有效。
+                <br><br>
+                <strong>目标：</strong>达到1e8物质。
+                <br><br>
+                <strong>奖励：</strong>自动化间隔变为2秒，大幅提高自动操作速度
+            </div>
+            <div id="challenge3Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge3Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge3Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第四个挑战卡片：维度折叠 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第4个挑战：维度折叠</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                物质生产速度降低为正常的1/10，大幅减少物质产出效率。
+                <br><br>
+                <strong>目标：</strong>达到5e8物质。
+                <br><br>
+                <strong>奖励：</strong>物质生产速度永久提升50%
+            </div>
+            <div id="challenge4Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge4Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge4Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第五个挑战卡片：能量守恒 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第5个挑战：能量守恒</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                每次购买升级时，物质会变成负值（购买前的负值），并且增强器效果不翻倍。
+                <br><br>
+                <strong>目标：：</strong>达到5e9物质。
+                <br><br>
+                <strong>奖励：：</strong>购买升级时返还50%物质消耗
+            </div>
+            <div id="challenge5Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge5Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge5Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第六个挑战卡片：二重软上限 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第6个挑战：二重软上限</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                物质超过一万时启动二重软上限（原本在1.79e308物质后出现，公式和软上限一样，但乘数是严苛的10，这还是削弱版的，原版是20，不过你的爷爷大概等不到更新那一天）。
+                <br><br>
+                <strong>目标：</strong>达到1e9物质。
+                <br><br>
+                <strong>奖励：</strong>反物质对物质产生极低增幅效果（无上限）
+            </div>
+            <div id="challenge6Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge6Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge6Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第七个挑战卡片：熵增定律 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第7个挑战：熵增定律</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                宇宙熵增不可逆转！物质生成速度减少10%+时间*5%（最高99%），时间越长越难产生物质。18秒后无法继续！
+                <br><br>
+                <strong>目标：</strong>达到1e9物质。
+                <br><br>
+                <strong>奖励：</strong>物质对自身产生增益效果（前期上限×50）
+            </div>
+            <div id="challenge7Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge7Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge7Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+        <!-- 第八个挑战卡片：单一生成器 -->
+        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第8个挑战：单一生成器</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                极简主义挑战！初始拥有1个生成器，禁止购买任何生成器，只能依靠增强器和升级来提升产量。
+                <br><br>
+                <strong>目标：</strong>达到1e12物质。
+                <br><br>
+                <strong>奖励：</strong>无
+            </div>
+            <div id="challenge8Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge8Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge8Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+        
+,        <!-- 第九个挑战卡片：终极湮灭 -->
+        <div class="challenge-card" id="challenge9Card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:none; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第9个挑战：终极湮灭</div>
+            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
+                极简主义的终极考验！在这个挑战中，你将无法购买任何增强器，湮灭能量增益开平方，只能依靠生成器和升级来达成目标。
+                <br><br>
+                <strong>目标：</strong>达到1e50物质。
+                <br><br>
+                <strong>奖励：</strong>解锁黑洞系统，开启全新的游戏维度
+            </div>
+            <div id="challenge9Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
+            <button id="startChallenge9Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #ff0066; border-radius:8px;">开始挑战</button>
+            <button id="giveUpChallenge9Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
+        </div>
+
+
+
+    </div>
+</div>
+        <!-- 距离子选项卡内容 --> 
+         <div class="sub-tab-content" id="distance-content" style="display:none;"> 
+             <div style="padding: 20px; max-width: 1200px; margin: 0 auto;"> 
+                 <h2 style="color: #e94560; margin-bottom: 30px; font-size: 28px; text-align: center;">距离系统</h2> 
+                 
+                 <!-- 距离状态显示 --> 
+                 <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; justify-content: center;"> 
+                     <div class="stat-box" style="min-width: 200px;"> 
+                         <div>当前距离: <span id="currentDistance">0 mm</span></div> 
+                         <div>最大距离: <span id="maxDistance">0 mm</span></div> 
+                     </div> 
+                     <div class="stat-box" style="min-width: 200px;"> 
+                         <div>湮灭距离: <span id="annihilatedDistance">0 mm</span></div> 
+                         <div>距离增益: ×<span id="distanceBonus">1.00</span></div> 
+                     </div> 
+                 </div> 
+                 
+                 <!-- 湮灭能量折叠距离 --> 
+                 <div style="text-align: center; margin-bottom: 30px;"> 
+                     <div style="background: rgba(233, 69, 96, 0.1); padding: 20px; border-radius: 10px; border: 2px solid #e94560; display: inline-block;"> 
+                         <p style="color: #e94560; font-weight: bold; margin-bottom: 10px;">距离折叠技术</p> 
+                         <p style="margin-bottom: 15px; color: #f0f0f0;">使用湮灭能量来"折叠"空间距离</p> 
+                         <button id="useAnnihilationForDistance" style="padding: 10px 20px; background: #e94560; color: white; border: none; border-radius: 5px; cursor: pointer;">使用1湮灭能量前进1毫米</button> 
+                         <p style="color: #ccc; font-size: 12px; margin-top: 10px;">注意：会执行坍缩重置并重置湮灭能量，但保留四种能量进度</p> 
+                     </div> 
+                 </div> 
+                 
+                 <!-- 距离献祭 --> 
+                 <div style="text-align: center; margin-bottom: 30px;"> 
+                     <div style="background: rgba(255, 152, 0, 0.1); padding: 20px; border-radius: 10px; border: 2px solid #FF9800; display: inline-block;"> 
+                         <p style="color: #FF9800; font-weight: bold; margin-bottom: 10px;">距离献祭</p> 
+                         <p style="margin-bottom: 15px; color: #f0f0f0;">献祭距离获得永久的距离生成增益</p> 
+                         <button id="sacrificeDistance" style="padding: 10px 20px; background: #FF9800; color: white; border: none; border-radius: 5px; cursor: pointer;">献祭距离 (需要≥10公里)</button> 
+                         <p style="color: #ccc; font-size: 12px; margin-top: 10px;">注意：会执行坍缩重置并重置距离和湮灭能量</p> 
+                     </div> 
+                 </div> 
+                 
+                 <!-- 对数进度条 --> 
+                 <div style="margin-bottom: 30px;"> 
+                 </div> 
+                 
+                 <!-- 距离软上限提示区域 -->
+                 <div style="margin: 20px 0; padding: 10px; border-top: 1px solid #333;">
+                     <div id="distanceFirstSoftCapNotice" style="display:none; color:#ff6600; background:#331100; text-align:center; font-size:16px; font-weight:bold; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ff6600;">距离获取受到一重软上限限制，效率开始下降！</div>
+                     <div id="distanceSecondSoftCapNotice" style="display:none; color:#cc0000; background:#220000; text-align:center; font-size:16px; font-weight:bold; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #cc0000;">距离获取受到二重软上限限制，效率大幅下降！</div>
+                     <div id="distanceHardCapNotice" style="display:none; color:#ffffff; background:#000000; text-align:center; font-size:16px; font-weight:bold; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ffffff;">撞上虚无墙！距离获取完全停止！</div>
+                 </div>
+                 
+                 <!-- 能量生成器条状布局 --> 
+                 <div style="margin: 20px 0;"> 
+                     <h3 style="color: #5ee6eb; text-align: center; margin-bottom: 20px;">能量生成器</h3> 
+                     
+                     <!-- 距离能量购买条 --> 
+                     <div class="energy-bar" style="background: linear-gradient(90deg, #1a1a1a, #2a2a2a); border: 1px solid #4CAF50; margin: 8px 0; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;"> 
+                         <div style="display: flex; align-items: center; gap: 15px; flex: 1;"> 
+                             <div style="color: #4CAF50; font-weight: bold; min-width: 120px;">距离能量</div> 
+                             <div style="color: #fff; min-width: 150px;">拥有: <span id="distanceEnergyDisplay">0</span></div> 
+                             <div style="color: #888; min-width: 80px; font-size: 11px;">(<span id="distanceEnergyCount">0</span>个)</div> 
+                             <div style="color: #ccc; font-size: 12px; flex: 1;">每秒生产距离: <span id="distanceProductionRate">0 毫米/秒</span> | 倍率: ×<span id="distanceEnergyMultiplier">1</span> <span id="distanceEnergyEffect">(每10个效果×2)</span></div> 
+                         </div> 
+                         <div style="display: flex; align-items: center; gap: 10px;"> 
+                             <div style="color: #FFD700; min-width: 100px; text-align: right;">成本: <span id="distanceEnergyCost">1.00e6 mm</span></div> 
+                             <button id="buyDistanceEnergy" class="buyUpgrade" style="min-width: 80px; padding: 8px 12px;">购买</button> 
+                         </div> 
+                     </div> 
+                     
+                     <!-- 跞禼能量购买条 --> 
+                     <div class="energy-bar" style="background: linear-gradient(90deg, #1a1a1a, #2a2a2a); border: 1px solid #2196F3; margin: 8px 0; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;"> 
+                         <div style="display: flex; align-items: center; gap: 15px; flex: 1;"> 
+                             <div style="color: #2196F3; font-weight: bold; min-width: 120px;">跞禼能量</div> 
+                             <div style="color: #fff; min-width: 150px;">拥有: <span id="kuaEnergyDisplay">0</span></div> 
+                             <div style="color: #888; min-width: 80px; font-size: 11px;">(<span id="kuaEnergyCount">0</span>个)</div> 
+                             <div style="color: #ccc; font-size: 12px; flex: 1;">每秒产生1距离能量，每10个效果×2 | 倍率: ×<span id="kuaEnergyMultiplier">1</span></div> 
+                         </div> 
+                         <div style="display: flex; align-items: center; gap: 10px;"> 
+                             <div style="color: #FFD700; min-width: 100px; text-align: right;">成本: <span id="kuaEnergyCost">1.00e10 mm</span></div> 
+                             <button id="buyKuaEnergy" class="buyUpgrade" style="min-width: 80px; padding: 8px 12px;">购买</button> 
+                         </div> 
+                     </div> 
+                     
+                     <!-- 跟禽能量购买条 --> 
+                     <div class="energy-bar" style="background: linear-gradient(90deg, #1a1a1a, #2a2a2a); border: 1px solid #FF9800; margin: 8px 0; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;"> 
+                         <div style="display: flex; align-items: center; gap: 15px; flex: 1;"> 
+                             <div style="color: #FF9800; font-weight: bold; min-width: 120px;">跟禽能量</div> 
+                             <div style="color: #fff; min-width: 150px;">拥有: <span id="genQinEnergyDisplay">0</span></div> 
+                             <div style="color: #888; min-width: 80px; font-size: 11px;">(<span id="genQinEnergyCount">0</span>个)</div> 
+                             <div style="color: #ccc; font-size: 12px; flex: 1;">每秒产生1跞禼能量，每10个效果×2 | 倍率: ×<span id="genQinEnergyMultiplier">1</span></div> 
+                         </div> 
+                         <div style="display: flex; align-items: center; gap: 10px;"> 
+                             <div style="color: #FFD700; min-width: 100px; text-align: right;">成本: <span id="genQinEnergyCost">1.00e15 mm</span></div> 
+                             <button id="buyGenQinEnergy" class="buyUpgrade" style="min-width: 80px; padding: 8px 12px;">购买</button> 
+                         </div> 
+                     </div> 
+                     
+                     <!-- 跠禾能量购买条 --> 
+                     <div class="energy-bar" style="background: linear-gradient(90deg, #1a1a1a, #2a2a2a); border: 1px solid #9C27B0; margin: 8px 0; padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;"> 
+                         <div style="display: flex; align-items: center; gap: 15px; flex: 1;"> 
+                             <div style="color: #9C27B0; font-weight: bold; min-width: 120px;">跠禾能量</div> 
+                             <div style="color: #fff; min-width: 150px;">拥有: <span id="kuoHeEnergyDisplay">0</span></div> 
+                             <div style="color: #888; min-width: 80px; font-size: 11px;">(<span id="kuoHeEnergyCount">0</span>个)</div> 
+                             <div style="color: #ccc; font-size: 12px; flex: 1;">每秒产生1跟禽能量，每10个效果×2 | 倍率: ×<span id="kuoHeEnergyMultiplier">1</span></div> 
+                         </div> 
+                         <div style="display: flex; align-items: center; gap: 10px;"> 
+                             <div style="color: #FFD700; min-width: 100px; text-align: right;">成本: <span id="kuoHeEnergyCost">10 ly</span></div> 
+                             <button id="buyKuoHeEnergy" class="buyUpgrade" style="min-width: 80px; padding: 8px 12px;">购买</button> 
+                         </div> 
+                     </div> 
+                 </div> 
+                 
+                 <!-- 里程碑列表 --> 
+                 <div style="margin-top: 40px;"> 
+                     <h3 style="color: #5ee6eb; text-align: center; margin-bottom: 20px;">距离里程碑</h3> 
+                     <div id="distanceMilestones" style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;"> 
+                         <!-- 里程碑将由JavaScript动态生成 --> 
+                     </div> 
+                 </div> 
+             </div> 
+         </div>
+    </div>
+    <div class="tab-content" id="upgradesTab" style="display: none;">
+        <h1>升级</h1>
+        <div class="upgrade-card">
+            <h3>密度过高</h3>
+            <p>价格: 100物质</p>
+            <p>效果: 提高物质生成速度2倍</p>
+            <button id="buyDensityUpgrade">购买升级</button>
+        </div>
+        <div class="upgrade-card">
+            <h3>压缩物质</h3>
+            <p>价格: 500物质</p>
+            <p>效果: 物质产量乘以√log(物质)</p>
+            <button id="buyCompressMatter">购买升级</button>
+              </div>
+        <div class="upgrade-card">
+            <h3>扩大仓库</h3>
+            <p>价格: 1e8物质</p>
+            <p>效果: 软上限削弱系数*0.1</p>
+            <button id="buyExpandWarehouse">购买升级</button>
+        </div>
+      </div>
+
+    <!-- 黑洞选项卡内容 -->
+    <div class="tab-content" id="blackholeTab" style="display: none;">
+        <!-- 黑洞子选项卡按钮 -->
+        <div class="sub-tabs" id="blackhole-sub-tabs">
+            <div class="sub-tab active" id="blackholeEnterTabBtn" data-subtab="blackhole-enter">投喂黑洞</div>
+            
+            <div class="sub-tab" id="blackholeResourcesTabBtn" data-subtab="blackhole-resources">资源</div>
+            
+            <div class="sub-tab" id="blackholeUpgradesTabBtn" data-subtab="blackhole-upgrades">升级</div>
+        </div>
+        
+        <!-- 投喂黑洞子选项卡内容 -->
+        <div class="sub-tab-content" id="blackhole-enter-content">
+            <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #1a0d2e, #2d1b69, #4a0e4e); min-height: 600px;">
+                <!-- 黑洞描述按钮 -->
+                <div style="margin-bottom: 20px;">
+                    <button id="blackholeDescBtn" style="background: linear-gradient(135deg, #4a0e4e, #2d1b69); color: #e0b3ff; border: 2px solid #8a2be2; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 16px;">投喂黑洞说明</button>
+                </div>
+                
+                <!-- 黑洞视觉效果 -->
+                <div style="display: flex; justify-content: center; margin: 40px 0;">
+                    <div id="blackholeCircle" style="width: 200px; height: 200px; background: radial-gradient(circle, #000000 0%, #000000 60%, #ffffff 65%, #ffffff 70%, transparent 75%); border-radius: 50%; box-shadow: 0 0 50px #8a2be2, inset 0 0 30px #4a0e4e; animation: blackhole-pulse 3s ease-in-out infinite; cursor: pointer; transition: transform 0.2s ease;" title="点击投喂黑洞">
+                        <div style="width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, #000000 0%, #000000 70%, transparent 100%);"></div>
+                    </div>
+                </div>
+                
+                <!-- 停止投喂按钮 -->
+                <div style="margin: 30px 0;">
+
+                </div>
+                
+                <!-- 黑洞投喂状态显示 -->
+                <div id="blackholeStatus" style="color: #e0b3ff; font-size: 18px; margin-top: 20px;">
+                    <!-- 状态信息将由JavaScript动态更新 -->
+                </div>
+                
+                <!-- 开发者退出按钮 -->
+                <div style="margin-top: 30px;">
+
+                </div>
+            </div>
+        </div>
+        
+
+        
+        <!-- 黑洞资源子选项卡内容 -->
+        <div class="sub-tab-content" id="blackhole-resources-content" style="display: none;">
+            <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #1a0d2e, #2d1b69, #4a0e4e); min-height: 600px;">
+                <h2 style="color: #e0b3ff; margin-bottom: 30px; font-size: 24px;">黑洞资源</h2>
+                
+                <!-- 黑洞碎片显示 -->
+                <div style="background: linear-gradient(135deg, #2a1a3e, #3d2b5f); border: 2px solid #8a2be2; margin: 20px auto; max-width: 500px; padding: 25px; border-radius: 12px;">
+                    <h3 style="color: #e0b3ff; margin-bottom: 20px; font-size: 20px;">🌌 黑洞碎片</h3>
+                    <div style="color: #c9a9dd; margin-bottom: 15px; font-size: 18px;">当前数量: <span id="blackholeFragmentsAmount" style="color: #fff; font-weight: bold;">0</span></div>
+                    <div style="color: #c9a9dd; margin-bottom: 15px; font-size: 16px;">历史最大: <span id="maxBlackholeFragments" style="color: #ffd700; font-weight: bold;">0</span></div>
+                    <div style="color: #aaa; font-size: 14px; margin-top: 10px;">投喂黑洞获得的神秘碎片，每秒生产等量时间能量</div>
+                </div>
+                
+                <!-- 黑洞质量显示 -->
+                <div style="background: linear-gradient(135deg, #3e1a3e, #5f2b5f); border: 2px solid #ff6b6b; margin: 20px auto; max-width: 500px; padding: 25px; border-radius: 12px;">
+                    <h3 style="color: #ffb3b3; margin-bottom: 20px; font-size: 20px;">🕳️ 黑洞质量</h3>
+                    <div style="color: #dda9dd; margin-bottom: 15px; font-size: 18px;">当前质量: <span id="blackholeMassAmount" style="color: #fff; font-weight: bold;">0g</span></div>
+                    <div style="color: #aaa; font-size: 14px; margin-top: 10px;">投喂黑洞累积的总质量，质量越大黑洞越强大</div>
+                </div>
+                
+                <!-- 时间能量显示 -->
+                <div style="background: linear-gradient(135deg, #1a3e2a, #2b5f3d); border: 2px solid #2be28a; margin: 20px auto; max-width: 500px; padding: 25px; border-radius: 12px;">
+                    <h3 style="color: #b3ffe0; margin-bottom: 20px; font-size: 20px;">⏰ 时间能量</h3>
+                    <div style="color: #a9ddc9; margin-bottom: 15px; font-size: 18px;">当前数量: <span id="timeEnergyAmount" style="color: #fff; font-weight: bold;">0</span></div>
+                    <div style="color: #a9ddc9; margin-bottom: 15px; font-size: 16px;">生产速率: <span id="timeEnergyRate" style="color: #4CAF50; font-weight: bold;">0</span>/s</div>
+                    <div style="color: #aaa; font-size: 14px; margin-top: 10px;">黑洞碎片每秒生产的时间能量，用于各种时空操作</div>
+                </div>
+                
+
+                
+
+            </div>
+        </div>
+        
+        <!-- 黑洞升级子选项卡内容 -->
+        <div class="sub-tab-content" id="blackhole-upgrades-content" style="display: none;">
+            <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #1a0d2e, #2d1b69, #4a0e4e); min-height: 600px;">
+                <h2 style="color: #e0b3ff; margin-bottom: 20px; font-size: 24px;">黑洞升级</h2>
+                
+                <!-- 路线选择按钮 -->
+                <button id="choose-path-btn" style="background: linear-gradient(135deg, #8a2be2, #6a1b9a); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);" onclick="BlackholeUpgrades.showPathSelection()">选择路线</button>
+                
+                <!-- 升级表格容器 -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; max-width: 900px; margin: 0 auto;">
+                    
+                    <!-- 物质路线列 -->
+                    <div style="background: rgba(42, 26, 62, 0.3); border-radius: 12px; padding: 15px;">
+                        <h3 style="color: #8a2be2; margin-bottom: 15px; font-size: 18px;">物质路线</h3>
+                        
+                        <!-- 物质增益升级 -->
+                        <div id="matter-boost-upgrade" style="background: linear-gradient(135deg, #2a1a3e, #3d2b5f); border: 2px solid #8a2be2; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; margin-bottom: 10px;" onclick="BlackholeUpgrades.buyMatterBoost()">
+                            <div style="color: #e0b3ff; font-weight: bold; font-size: 12px; margin-bottom: 4px;">你确定这是放置游戏？</div>
+                            <div style="color: #c9a9dd; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">物质获取 × log(物质)</div>
+                            <div id="matter-boost-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 100g</div>
+                            <div id="matter-boost-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                        
+                        <!-- 吞噬物质转化升级 -->
+                        <div id="matter-devour-upgrade" style="background: linear-gradient(135deg, #1a3e1a, #2b5f2b); border: 2px solid #2be22b; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;" onclick="BlackholeUpgrades.buyMatterDevour()">
+                            <div style="color: #b3ffb3; font-weight: bold; font-size: 12px; margin-bottom: 4px;">吞噬物质转化</div>
+                            <div style="color: #a9dda9; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">质量增幅物质获取</div>
+                            <div id="matter-devour-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 1000g</div>
+                            <div id="matter-devour-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                        
+                        <!-- 物质路径三：时间加速 -->
+                        <div id="matter-time-acceleration" style="background: linear-gradient(135deg, #1a3e1a, #2b5f2b); border: 2px solid #2be22b; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; margin-top: 10px;" onclick="BlackholeUpgrades.buyMatterTimeAcceleration()">
+                            <div style="color: #b3ffb3; font-weight: bold; font-size: 12px; margin-bottom: 4px;">时间加速</div>
+                            <div style="color: #a9dda9; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">物质获取^1.1</div>
+                            <div id="matter-time-acceleration-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ^1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 10kg</div>
+                            <div id="matter-time-acceleration-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 反物质路线列 -->
+                    <div style="background: rgba(62, 26, 26, 0.3); border-radius: 12px; padding: 15px;">
+                        <h3 style="color: #e22b8a; margin-bottom: 15px; font-size: 18px;">反物质路线</h3>
+                        
+                        <!-- 反物质爆炸升级 -->
+                        <div id="antimatter-explosion-upgrade" style="background: linear-gradient(135deg, #3e1a1a, #5f2b2b); border: 2px solid #e22b8a; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;" onclick="BlackholeUpgrades.buyAntimatterExplosion()">
+                            <div style="color: #ffb3e0; font-weight: bold; font-size: 12px; margin-bottom: 4px;">反物质爆炸^2</div>
+                            <div style="color: #dda9c9; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">反物质获取 × 10000</div>
+                            <div id="antimatter-explosion-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 1000g</div>
+                            <div id="antimatter-explosion-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                        
+                        <!-- 反物质升级2：打破质量守恒 -->
+                        <div id="antimatter-upgrade2" style="background: linear-gradient(135deg, #3e1a1a, #5f2b2b); border: 2px solid #e22b8a; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; margin-top: 10px;" onclick="BlackholeUpgrades.buyAntimatterUpgrade2()">
+                            <div style="color: #ffb3e0; font-weight: bold; font-size: 12px; margin-bottom: 4px;">打破质量守恒</div>
+                            <div style="color: #dda9c9; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">重置获得反物质×10^湮灭能量</div>
+                            <div id="antimatter-upgrade2-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">自动化湮灭: 20%</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 10000g</div>
+                            <div id="antimatter-upgrade2-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                        
+                        <!-- 反物质路径三：湮灭一切 -->
+                        <div id="antimatter-annihilate-all" style="background: linear-gradient(135deg, #3e1a1a, #5f2b2b); border: 2px solid #e22b8a; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; margin-top: 10px;" onclick="BlackholeUpgrades.buyAntimatterAnnihilateAll()">
+                            <div style="color: #ffb3e0; font-weight: bold; font-size: 12px; margin-bottom: 4px;">湮灭一切</div>
+                            <div style="color: #dda9c9; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">增幅湮灭能量增益公式</div>
+                            <div id="antimatter-annihilate-all-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 100kg</div>
+                            <div id="antimatter-annihilate-all-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 黑洞路线列 -->
+                    <div style="background: rgba(26, 13, 46, 0.3); border-radius: 12px; padding: 15px;">
+                        <h3 style="color: #9c27b0; margin-bottom: 15px; font-size: 18px;">黑洞路线</h3>
+                        
+                        <!-- 黑洞膨胀升级 -->
+                        <div id="blackhole-expansion-upgrade" style="background: linear-gradient(135deg, #1a0d2e, #2d1b69); border: 2px solid #9c27b0; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer;" onclick="BlackholeUpgrades.buyBlackholeExpansion()">
+                            <div style="color: #d1c4e9; font-weight: bold; font-size: 12px; margin-bottom: 4px;">膨胀！</div>
+                            <div style="color: #b39ddb; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">黑洞质量获取大幅提升</div>
+                            <div id="blackhole-expansion-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">投喂增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 1000g</div>
+                            <div id="blackhole-expansion-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                        
+                        <!-- 黑洞升级2：时间加速 -->
+                        <div id="blackhole-upgrade2" style="background: linear-gradient(135deg, #1a0d2e, #2d1b69); border: 2px solid #9c27b0; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; margin-top: 10px;" onclick="BlackholeUpgrades.buyBlackholeUpgrade2()">
+                            <div style="color: #d1c4e9; font-weight: bold; font-size: 12px; margin-bottom: 4px;">时间加速</div>
+                            <div style="color: #b39ddb; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">物质增幅时间能量获取</div>
+                            <div id="blackhole-upgrade2-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 10t</div>
+                            <div id="blackhole-upgrade2-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                        
+                        <!-- 黑洞路径三：吞噬 -->
+                        <div id="blackhole-devour" style="background: linear-gradient(135deg, #1a0d2e, #2d1b69); border: 2px solid #9c27b0; padding: 10px; border-radius: 8px; text-align: center; min-height: 80px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; margin-top: 10px;" onclick="BlackholeUpgrades.buyBlackholeDevour()">
+                            <div style="color: #d1c4e9; font-weight: bold; font-size: 12px; margin-bottom: 4px;">吞噬</div>
+                            <div style="color: #b39ddb; font-size: 10px; margin-bottom: 6px; flex-grow: 1;">增幅黑洞质量和碎片获得公式</div>
+                            <div id="blackhole-devour-current" style="color: #4CAF50; font-size: 9px; margin-bottom: 4px; font-weight: bold;">当前增益: ×1</div>
+                            <div style="color: #ffd700; font-weight: bold; font-size: 10px;">价格: 100t</div>
+                            <div id="blackhole-devour-status" style="color: #ff6b6b; font-size: 9px; margin-top: 2px;">未购买</div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- CSS动画 -->
+    <style>
+        @keyframes blackhole-pulse {
+            0%, 100% { 
+                box-shadow: 0 0 50px #8a2be2, inset 0 0 30px #4a0e4e;
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 80px #8a2be2, inset 0 0 50px #4a0e4e;
+                transform: scale(1.05);
+            }
+        }
+        
+        #blackholeCircle:hover {
+            box-shadow: 0 0 100px #8a2be2, inset 0 0 60px #4a0e4e !important;
+            filter: brightness(1.2);
+        }
+        
+        .blackhole-tab:hover {
+            background: linear-gradient(135deg, #6a1b9a, #4a148c) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+    </style>
+
+    <!-- 物质选项卡内容 -->
+    <div class="tab-content" id="matterTab">
+<h1>物质放置</h1>
+    <div class="game-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; max-width: 1200px; margin: 0 auto;">
+    <div class="stat-box">
+        <div>当前物质: <span id="currentMatter">10</span></div>
+        <div>每秒生成: <span id="matterPerSecond">0</span></div>
+    </div>
+    <div class="stat-box">
+        <div>物质生成器: <span id="generatorCount">0</span></div>
+        <div>成本: <span id="generatorCost">10</span></div>
+        <button id="buyGenerator" class="buyUpgrade">购买生成器</button>
+    </div>
+    <div class="stat-box">
+        <div>物质增强器: <span id="enhancerCount">0</span></div>
+        <div>成本: <span id="enhancerCost">100</span></div>
+        <button id="buyEnhancer" class="buyUpgrade">购买增强器</button>
+    </div>
+        
+
+</div>
+</div>
+
+    <!-- 设置选项卡内容 -->
+    <div class="tab-content" id="settingsTab" style="display: none;">
+        <div class="sub-tabs" style="justify-content: center; width: 100%;">
+            <div class="sub-tab active" data-subtab="save">存档</div>
+            <div class="sub-tab" data-subtab="about">关于</div>
+            <div class="sub-tab" data-subtab="author">作者</div>
+            <div class="sub-tab" data-subtab="misc">杂项</div>
+        </div>
+        <div class="sub-tab-content" id="save-content">
+        <h1>存档设置</h1>
+        <div class="settings-container">
+            <div class="setting-item">
+                <button id="saveGame">手动存档</button>
+                <p>立即保存当前游戏进度到浏览器</p>
+            </div>
+            <div class="setting-item">
+                <button id="loadGame">加载存档</button>
+                <p>从浏览器中加载最近保存的进度</p>
+            </div>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="autoSaveToggle" checked> 启用自动存档
+                </label>
+                <p>每5秒自动保存游戏进度</p>
+            </div>
+            <div class="setting-item">
+                <button id="deleteSave" style="background: #ff4444; color: white;">删除存档</button>
+                <p>清除所有保存的游戏进度</p>
+            </div>
+        </div>
+        </div>
+        <div class="sub-tab-content" id="about-content" style="display:none;">
+            <div style="padding: 30px; text-align: center; background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 15px; margin: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">
+                <h1 style="margin-bottom: 25px; color: #e94560; font-size: 32px; text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);">✨ 物质放置 ✨</h1>
+
+                <div style="font-size: 18px; line-height: 1.9; max-width: 650px; margin: 0 auto; text-align: center; color: #f0f0f0;">
+                    <p style="margin-bottom: 20px; font-style: italic;">(其实我只有这个页面认真做了)</p>
+
+                    <div style="background: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #e94560;">
+                        <p style="font-weight: bold; font-size: 20px; margin-bottom: 15px; color: #e94560;">游戏制作</p>
+                        <p style="margin-bottom: 10px;"><span style="color: #e94560;">👑</span> 作者：<span style="color: #5ee6eb; font-weight: bold;">NaNe308/xhyadofai</span></p>
+                        <p style="margin-bottom: 10px;"><span style="color: #e94560;">🧮</span> 本游戏使用了 <span style="color: #5ee6eb; font-weight: bold;">OmegaNum.js</span></p>
+                        <p style="margin-bottom: 10px;"><span style="color: #e94560;">🌟</span> 特别鸣谢：<span id="specialThanksQqQe308" style="color: #5ee6eb; font-weight: bold; cursor: pointer;">QqQe308</span></p>
+                        <p><span style="color: #e94560;">🙏</span> 谢谢QqQe308帮我整github page！</p>
+                    </div>
+
+                    <!-- 删除了格言 -->
+
+                    <div style="margin-top: 30px;">
+                        <div id="versionDisplay" style="display: inline-block; padding: 10px 25px; background: #e94560; color: #fff; border-radius: 50px; font-weight: bold; box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4); cursor: pointer;" onclick="Game.toggleVersionEdit()">
+                            版本：<span id="versionNumber">1.1.0</span>
+                        </div>
+                        <div id="versionEditContainer" style="display: none; margin-top: 15px;">
+                            <input type="text" id="versionInput" value="1.1.0" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #222; color: white;">
+                            <button id="saveVersionBtn" style="margin-left: 10px; padding: 8px 15px; background: #e94560; color: white; border: none; border-radius: 4px; cursor: pointer;" onclick="Game.saveVersionNumber()">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sub-tab-content" id="author-content" style="display:none;">
+            <button id="donateButton" style="background-color: red; color: white; padding: 10px 20px; font-size: 16px; margin: 20px;">支持开发者</button>
+            <div id="devModeEntry" style="margin-top: 20px;">
+                <h3>开发者模式</h3>
+                <input type="password" id="devModePassword" placeholder="输入开发者密码" style="padding: 5px; width: 180px;">
+                <button id="devModeBtn" style="margin-left: 8px;">激活</button>
+                <div id="devModeMsg" style="color: #ff4444; margin-top: 8px;"></div>
+            </div>
+        </div>
+        <div class="sub-tab-content" id="misc-content" style="display:none;">
+            <h1>杂项设置</h1>
+            <div class="setting-item">
+                <label>
+                    <input type="checkbox" id="toggleOfflineMode"> 启用离线收益模式
+                </label>
+                <p>启动后物质将停止增长，记录当前时间</p>
+            </div>
+            <!-- 离线能量功能已移除 -->
+            <div class="setting-item">
+                <button id="brokenLandsBtn" style="background: #555; color: #aaa; text-decoration: line-through;">恢复离线收益功能</button>
+                <p style="color: #888; font-style: italic;">此功能已被移除，点击查看详情</p>
+            </div>
+            <div class="setting-item">
+                <button id="testBlackholeBtn" style="background: #673AB7; color: white; padding: 10px 20px; font-size: 16px;">点击此按钮解锁黑洞重置</button>
+            </div>
+            <div class="setting-item">
+                <button id="pauseGameBtn" style="background: #ff9800; color: white; padding: 10px 20px; font-size: 16px;">暂停游戏</button>
+                <p>点击后将弹出一个提示框，游戏循环将暂停，直到您关闭提示框。</p>
+            </div>
+    </div>
+
+    </div>
+
+    <script src="OmegaNum.js"></script>
+    <script src="js/Cheater's_mom_die.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/antimatter.js"></script>
+    <script src="js/blackhole.js"></script>
+    <script src="js/save.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/timeStats.js"></script>
+    <script>
+        // 游戏初始化
+        window.addEventListener('load', () => {
+            Game.init();
+            UI.init();
+        });
+    </script>
+</body>
+</html>
