@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+d>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>物质放置：Antimatter</title>
+    <title>物质放置：Antihole</title>
     <script src="OmegaNum.js"></script>
+    <script src="Format-OmegaNum.js"></script>
+    <script src="js/lightOmegaNum.js"></script>
+    <script src="js/omegaNumReplacer.js"></script>
     <style>
                 .tabs {
             display: flex;
@@ -33,6 +34,7 @@
         }
         .sub-tabs {
             display: flex;
+            justify-content: center;
             margin-bottom: 15px;
             border-bottom: 1px solid #444;
         }
@@ -95,6 +97,8 @@
             text-align: center;
             font-size: 14px;
             margin: 5px;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
         .stat-box::before {
@@ -110,8 +114,9 @@
         }
 
         .stat-box:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
         }
 
         .stat-box:hover::before {
@@ -247,6 +252,174 @@ button:disabled {
             font-size: 12px;
         }
 
+        /* 距离系统样式 */
+        .distance-info {
+            background: #1a1a1a;
+            padding: 15px;
+            border: 1px solid #4CAF50;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .energy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .energy-box {
+            background: #1a1a1a;
+            padding: 15px;
+            border: 1px solid #2196F3;
+            text-align: center;
+        }
+        
+        .milestone {
+            background: #1a1a1a;
+            border: 1px solid #666;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .milestone.unlocked {
+            border-color: #4CAF50;
+            background: #0a2a0a;
+        }
+        
+        .milestone.locked {
+            border-color: #666;
+            background: #1a1a1a;
+            opacity: 0.7;
+        }
+        
+        .milestone-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .milestone-name {
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .milestone-distance {
+            color: #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        .milestone-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #555;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            color: #fff;
+            font-size: 0.9em;
+            min-width: 60px;
+            text-align: right;
+        }
+        
+        .generator-section {
+            background: #1a1a1a;
+            border: 1px solid #FF9800;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .generator-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .buy-button {
+            background: #333;
+            color: #fff;
+            border: 1px solid #666;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .buy-button.affordable {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+        
+        .buy-button:disabled {
+            background: #222;
+            color: #666;
+            cursor: not-allowed;
+        }
+        
+        .collapse-section {
+            background: #2a1a1a;
+            border: 1px solid #ff4444;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        /* 能量条样式 */
+        .energy-bar {
+            transition: all 0.3s ease;
+        }
+        
+        .energy-bar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 自动化界面美化样式 */
+        .automation-controls {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .energy-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .energy-bar > div {
+                justify-content: center;
+            }
+            
+            .energy-bar .energy-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 1.2rem;
@@ -272,31 +445,43 @@ button:disabled {
                 width: calc(100% - 10px);
                 font-size: 10px;
             }
+            
+            .energy-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .milestone-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 新闻跑马灯 -->
-    <div id="newsContainer" style="position: fixed; top: 0; width: 100%; background: rgba(40, 40, 40, 0.95); color: #ffffff; padding: 10px; z-index: 9999; border-bottom: 2px solid #666; text-align: center;">
-      <div id="newsTickertape" style="font-family: Arial, sans-serif; font-size: 16px;"></div>
+    <div id="newsContainer" style="position: fixed; top: 0; width: 100%; background: rgba(40, 40, 40, 0.95); color: #ffffff; padding: 10px; z-index: 9999; border-bottom: 2px solid #666; text-align: center; height: 45px; overflow: hidden;">
+      <div id="newsTickertape" style="font-family: Arial, sans-serif; font-size: 16px; line-height: 24px;"></div>
     </div>
-    <div id="softCapNotice" style="display:none; color:#ff4444; background:#220000; text-align:center; font-size:18px; font-weight:bold; padding:6px 0; margin-top:48px; z-index:9998; position:relative;">因密度过高，产量受软上限限制！！！</div>
-    <div id="achievementDescBox" style="min-height:32px;text-align:center;font-size:17px;color:#FFD700;margin-bottom:10px;"></div>
+    
     <div class="tabs">
         <div class="tab active" data-tab="matter">物质</div>
     <div class="tab" data-tab="settings">设置</div>
+    <div class="tab" data-tab="developerTab" id="developerTabBtn" style="display: none; background: #4CAF50; border-color: #4CAF50;">开发者模式</div>
     <div class="tab" data-tab="stats">统计</div>
     <div class="tab" data-tab="upgrades">升级</div>
     <div class="tab" data-tab="achievements" id="achievementsTabBtn">成就</div>
         <div class="tab" data-tab="automation" id="automationTabBtn" style="display:none;">自动化</div>
         <div class="tab antimatter-tab" data-tab="antimatter" id="antimatterTabBtn" style="display:none;">反物质</div>
+        <div class="tab blackhole-tab" data-tab="blackhole" id="blackholeTabBtn" style="display:none; background: linear-gradient(135deg, #4a0e4e, #2d1b69); color: #e0b3ff; border: 2px solid #8a2be2;">黑洞</div>
 
     </div>
     <!-- 统计选项卡内容 -->
     <div class="tab-content" id="statsTab" style="display:none;">
         <div class="sub-tabs" id="stats-sub-tabs">
-            <button class="sub-tab active" id="basicStatsTabBtn" data-subtab="basic-stats">基础统计</button>
-            <button class="sub-tab" id="antimatterStatsTabBtn" data-subtab="antimatter-stats">反物质统计</button>
+            <div class="sub-tab active" id="basicStatsTabBtn" data-subtab="basic-stats">基础统计</div>
+            <div class="sub-tab" id="antimatterStatsTabBtn" data-subtab="antimatter-stats">反物质统计</div>
+            <div class="sub-tab" id="timeStatsTabBtn" data-subtab="time-stats">时间统计</div>
         </div>
         <div class="sub-tab-content" id="basic-stats-content">
             <div style="margin: 10px 0;">物质增强器倍率：<span id="enhancerMultiplierStat">1</span></div>
@@ -304,12 +489,23 @@ button:disabled {
             <div style="margin: 10px 0;">压缩物质效果：<span id="compressEffectStat">1</span></div>
         </div>
         <div class="sub-tab-content" id="antimatter-stats-content" style="display:none; text-align:center; color:#aaa; font-size:18px;">反物质统计（测试用，暂无内容）</div>
+        <div class="sub-tab-content" id="time-stats-content" style="display:none;">
+            <div style="margin: 10px 0;">游戏总时长：<span id="totalPlayTimeStat" style="color:#4CAF50; font-weight:bold;">0秒</span></div>
+            <div style="margin: 10px 0;">本次在线时长：<span id="onlineTimeStat" style="color:#2196F3; font-weight:bold;">0秒</span></div>
+            <div style="margin: 10px 0;">离线累计时长：<span id="offlineTimeStat" style="color:#FF9800; font-weight:bold;">0秒</span></div>
+            <div style="margin: 10px 0;">存档创建时间：<span id="saveCreationTimeStat" style="color:#E91E63; font-weight:bold;">未知</span></div>
+        </div>
+        <!-- 软上限提示区域 -->
+        <div style="margin-top: 20px; padding: 10px; border-top: 1px solid #333;">
+            <div id="softCapNotice" style="display:none; color:#ff4444; background:#220000; text-align:center; font-size:16px; font-weight:bold; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ff0000;">因密度过高，产量受软上限限制！！！</div>
+            <div id="doubleSoftCapNotice" style="display:none; color:#ff8800; background:#331100; text-align:center; font-size:16px; font-weight:bold; padding:8px; margin:5px 0; border-radius:5px; border:1px solid #ff8800;">二重软上限激活！产量受到严重限制！</div>
+        </div>
     </div>
     <!-- 成就选项卡内容 -->
     <div class="tab-content" id="achievementsTab" style="display:none;">
         <div class="sub-tabs" id="achievements-sub-tabs">
-            <button class="sub-tab active" id="achievementsTabBtn" data-subtab="achievements">成就</button>
-            <button class="sub-tab" id="hiddenAchievementsTabBtn" data-subtab="hidden-achievements">隐藏成就</button>
+            <div class="sub-tab active" id="achievementsTabBtn" data-subtab="achievements">成就</div>
+            <div class="sub-tab" id="hiddenAchievementsTabBtn" data-subtab="hidden-achievements">隐藏成就</div>
         </div>
         <div class="sub-tab-content" id="achievements-content">
             <div id="achievementsGrid" style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;"></div>
@@ -334,16 +530,45 @@ button:disabled {
                 <label>自动购买升级</label>
                 <input type="checkbox" id="autoBuyUpgrades" checked>
             </div>
-            <p class="automation-status">自动购买功能已激活，每5秒执行一次</p>
+            
+            <!-- 距离里程碑解锁的自动化功能 -->
+            <div style="margin-top: 20px; padding: 10px; border: 1px solid #666; background: #1a1a1a;">
+                <h3 style="color: #ccc; margin-bottom: 10px;">距离里程碑自动化</h3>
+                
+                <div id="autoAntimatterUpgradesGroup" style="display: none; margin: 5px 0;">
+                    <label style="color: #fff;">自动购买反物质升级 (1e6光年解锁)</label>
+                    <input type="checkbox" id="autoAntimatterUpgrades" checked>
+                </div>
+                
+                <div id="autoAnnihilateAntimatterGroup" style="display: none; margin: 5px 0;">
+                    <label style="color: #fff;">自动湮灭反物质 (1e10光年解锁)</label>
+                    <input type="checkbox" id="autoAnnihilateAntimatter" checked>
+                    <div style="font-size: 12px; color: #aaa;">每秒获得1%反物质的湮灭能量（反物质升级2时为20%）</div>
+                </div>
+                
+                <div id="autoEnergyPurchaseGroup" style="display: none; margin: 5px 0;">
+                    <label style="color: #fff;">自动购买四种能量 (1e20光年解锁)</label>
+                    <input type="checkbox" id="autoEnergyPurchase" checked>
+                </div>
+                
+                <div id="autoAnnihilateDistanceGroup" style="display: none; margin: 5px 0;">
+                    <label style="color: #fff;">自动湮灭距离 (1e50光年解锁)</label>
+                    <input type="checkbox" id="autoAnnihilateDistance" checked>
+                    <div style="font-size: 12px; color: #aaa;">每秒获得1%距离的湮灭距离</div>
+                </div>
+            </div>
+            
+
         </div>
     </div>
         <div id="antimatterTab" class="tab-content" style="display:none;">
         <!-- 反物质子选项卡按钮 -->
 <div class="sub-tabs" id="antimatter-sub-tabs">
-    <button class="sub-tab" id="antimatterTabBtn" data-subtab="antimatter">反物质</button>
-    <button class="sub-tab" id="antimatterUpgradesTabBtn" data-subtab="upgrades">反物质升级</button>
-    <button class="sub-tab" id="collapseTabBtn" data-subtab="collapse">坍缩</button>
-    <button class="sub-tab" id="challengeTabBtn" data-subtab="challenge">挑战</button>
+    <div class="sub-tab" id="antimatterTabBtn" data-subtab="antimatter">反物质</div>
+    <div class="sub-tab" id="antimatterUpgradesTabBtn" data-subtab="upgrades">反物质升级</div>
+    <div class="sub-tab" id="collapseTabBtn" data-subtab="collapse">坍缩</div>
+    <div class="sub-tab" id="challengeTabBtn" data-subtab="challenge">挑战</div>
+    <div class="sub-tab" id="distanceTabBtn" data-subtab="distance" style="display:none;">距离</div>
 </div>
         <div class="sub-tab-content" id="antimatter-content">
     <div class="stat-box">
@@ -351,6 +576,7 @@ button:disabled {
         <div id="antimatter">0</div>
         <div>生成速率: <span id="antimatterProduction">0</span>/s</div>
     </div>
+    <div id="antimatterSoftCapNotice" style="display:none; color:#ff4444; background:#220000; text-align:center; font-size:16px; font-weight:bold; padding:8px; margin-top:15px; border-radius:5px; border:1px solid #ff0000;"></div>
 </div>
         <div class="sub-tab-content" id="upgrades-content" style="display:none;">
     <div class="upgrade-card">
@@ -360,6 +586,16 @@ button:disabled {
      <button id="newEraButton" class="buyUpgrade">购买升级</button>
   </div>
   <div class="upgrade-card">
+      <h3>反物质爆炸</h3>
+      <p>价格: 500 反物质</p>
+      <p>效果: 反物质获取 ×2</p>
+      <button id="antimatterExplosionButton" class="buyUpgrade">购买升级</button>
+  </div>
+  <div class="upgrade-card">
+      <h3>扩大仓库-反物质</h3>
+      <p>价格: 10000 反物质</p>
+      <p>效果: 减轻反物质软上限</p>
+      <button id="expandAntimatterButton" class="buyUpgrade">购买升级</button>
   </div>
 <div class="upgrade-card">
   </div>
@@ -382,165 +618,4 @@ button:disabled {
     <div id="challengeMainSection" style="display:none; margin-top:32px; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; align-items:flex-start; min-height:480px;">
         <!-- 第一个挑战卡片 -->
         <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
-            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第一个挑战：升级无效</div>
-            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
-在挑战期间，密度和压缩物质升级无效，扩大仓库也无效。增强器仍然有效。
-目标：达到5e8物质。
-            </div>
-            <div id="challenge1Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
-            <button id="startChallenge1Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
-            <button id="giveUpChallenge1Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
-        </div>
-        
-        <!-- 第二个挑战卡片 -->
-        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
-            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第二个挑战：软上限极巨</div>
-            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
-在挑战期间，软上限的最后一个乘数为3，扩大仓库升级被禁用。
-目标：达到5e8物质。
-            </div>
-            <div id="challenge2Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
-            <button id="startChallenge2Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
-            <button id="giveUpChallenge2Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
-        </div>
-        
-        <!-- 第三个挑战卡片 -->
-        <div class="challenge-card" style="background:#181828; border-radius:18px; box-shadow:0 4px 24px #0008; width:320px; height:400px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 20px 20px; position:relative;">
-            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight:bold;">第三个挑战：双重打击</div>
-            <div style="margin-bottom:18px; color:#ccc; font-size:14px; text-align:left; width:100%; line-height:1.6;">
-在挑战期间，前两个挑战的减益同时出现：密度和压缩物质升级无效 + 软上限极巨。增强器仍然有效。
-目标：达到5e8物质。
-            </div>
-            <div id="challenge3Status" style="color:#00ff99; font-size:14px; margin-bottom:10px; text-align:center; width:100%;"></div>
-            <button id="startChallenge3Btn" style="margin:8px; padding:10px 25px; font-size:16px; background:#222; color:#fff; border:2px solid #00ff99; border-radius:8px;">开始挑战</button>
-            <button id="giveUpChallenge3Btn" style="margin:8px; padding:10px 25px; font-size:15px; background:#222; color:#fff; border:2px solid #ff4444; border-radius:8px; display:none;">放弃挑战</button>
-        </div>
-        
-        <!-- 挑战完成提示 -->
-        <div id="challengeCompleteArea" style="display:none; color:#00ff99; font-size:16px; margin-top:18px; text-align:center; width:100%;">挑战完成！奖励：密度和压缩物质升级效果×2（密度×4，压缩物质sqrt(log(matter))×2，扩大仓库容量0.05）</div>
-    </div>
-</div>
-    </div>
-    <div class="tab-content" id="upgradesTab" style="display: none;">
-        <h1>升级</h1>
-        <div class="upgrade-card">
-            <h3>密度过高</h3>
-            <p>价格: 100物质</p>
-            <p>效果: 提高物质生成速度2倍</p>
-            <button id="buyDensityUpgrade">购买升级</button>
-        </div>
-        <div class="upgrade-card">
-            <h3>压缩物质</h3>
-            <p>价格: 500物质</p>
-            <p>效果: 物质产量乘以√log(物质)</p>
-            <button id="buyCompressMatter">购买升级</button>
-              </div>
-        <div class="upgrade-card">
-            <h3>扩大仓库</h3>
-            <p>价格: 1e8物质</p>
-            <p>效果: 软上限削弱系数*0.1</p>
-            <button id="buyExpandWarehouse">购买升级</button>
-        </div>
-      </div>
-
-    <!-- 物质选项卡内容 -->
-    <div class="tab-content" id="matterTab">
-<h1>物质放置</h1>
-    <div class="game-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; width: 100%; max-width: 1200px; margin: 0 auto;">
-    <div class="stat-box">
-        <div>当前物质: <span id="currentMatter">10</span></div>
-        <div>每秒生成: <span id="matterPerSecond">0</span></div>
-    </div>
-    <div class="stat-box">
-        <div>物质生成器: <span id="generatorCount">0</span></div>
-        <div>成本: <span id="generatorCost">10</span></div>
-        <button id="buyGenerator" class="buyUpgrade">购买生成器</button>
-    </div>
-    <div class="stat-box">
-        <div>物质增强器: <span id="enhancerCount">0</span></div>
-        <div>成本: <span id="enhancerCost">100</span></div>
-        <button id="buyEnhancer" class="buyUpgrade">购买增强器</button>
-    </div>
-</div>
-</div>
-
-    <!-- 设置选项卡内容 -->
-    <div class="tab-content" id="settingsTab" style="display: none;">
-        <div class="sub-tabs">
-            <div class="sub-tab active" data-subtab="save">存档</div>
-            <div class="sub-tab" data-subtab="about">关于</div>
-            <div class="sub-tab" data-subtab="author">作者</div>
-            <div class="sub-tab" data-subtab="misc">杂项</div>
-        </div>
-        <div class="sub-tab-content" id="save-content">
-        <h1>存档设置</h1>
-        <div class="settings-container">
-            <div class="setting-item">
-                <button id="saveGame">手动存档</button>
-                <p>立即保存当前游戏进度到浏览器</p>
-            </div>
-            <div class="setting-item">
-                <button id="loadGame">加载存档</button>
-                <p>从浏览器中加载最近保存的进度</p>
-            </div>
-            <div class="setting-item">
-                <label>
-                    <input type="checkbox" id="autoSaveToggle" checked> 启用自动存档
-                </label>
-                <p>每5秒自动保存游戏进度</p>
-            </div>
-            <div class="setting-item">
-                <button id="deleteSave" style="background: #ff4444; color: white;">删除存档</button>
-                <p>清除所有保存的游戏进度</p>
-            </div>
-        </div>
-        </div>
-        <div class="sub-tab-content" id="about-content" style="display:none;">
-            <!-- 关于内容区域 -->
-        </div>
-        <div class="sub-tab-content" id="author-content" style="display:none;">
-            <button style="background-color: red; color: white; padding: 10px 20px; font-size: 16px; margin: 20px;" onclick="window.open('https://afdian.tv/a/matterldle', '_blank')">支持开发者</button>
-            <div id="devModeEntry" style="margin-top: 20px;">
-                <h3>开发者模式</h3>
-                <input type="password" id="devModePassword" placeholder="输入开发者密码" style="padding: 5px; width: 180px;">
-                <button id="devModeBtn" style="margin-left: 8px;">激活</button>
-                <div id="devModeMsg" style="color: #ff4444; margin-top: 8px;"></div>
-            </div>
-        </div>
-        <div class="sub-tab-content" id="misc-content" style="display:none;">
-            <h1>杂项设置</h1>
-            <div class="setting-item">
-                <label>
-                    <input type="checkbox" id="toggleOfflineMode"> 启用离线收益模式
-                </label>
-                <p>启动后物质将停止增长，记录当前时间</p>
-            </div>
-            <div class="setting-item">
-                <label>
-                    <input type="checkbox" id="enableOfflineBonus"> 启用离线收益加成
-                </label>
-                <p>物质生成速度×1024，每秒消耗1023离线能量</p>
-            </div>
-            <div class="setting-item">
-                <p>当前离线能量: <span id="offlineEnergy">0</span></p>
-            </div>
-    </div>
-
-    </div>
-
-    <script src="OmegaNum.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/antimatter.js"></script>
-    <script src="js/save.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/achievements.js"></script>
-    <script>
-        // 游戏初始化
-        window.addEventListener('load', () => {
-            Game.init();
-            UI.init();
-        });
-    </script>
-</body>
-</html>
+            <div style="margin-bottom:16px; color:#fff; font-size:18px; font-weight
