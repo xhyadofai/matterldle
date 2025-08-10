@@ -1720,14 +1720,13 @@ function updateDistanceMilestones() {
         },
         { 
             distance: new OmegaNum(1e8), 
-            name: '100km: 湮灭距离以极致公式增益物质', 
+            name: '100km: 湮灭距离以强化公式增益物质', 
             unlocked: Game.state.maxDistance && Game.state.maxDistance.gte(1e8),
             effect: () => {
                  if (Game.state.annihilatedDistance && Game.state.annihilatedDistance.gt(0)) {
-                     const annihilatedLightYears = Game.state.annihilatedDistance.div(new OmegaNum('9.461e15'));
-                     // 极致增量游戏公式：log10(湮灭光年+1) * 100 + (湮灭光年^0.8) * 50 + 1
-                     const logBonus = annihilatedLightYears.add(1).log10().mul(100);
-                     const powerBonus = annihilatedLightYears.pow(0.8).mul(50);
+                     // 削弱公式：基于湮灭距离本身，log10(湮灭距离+1e6) * 0.8 + (湮灭距离^0.15) / 1e12 + 1
+                     const logBonus = Game.state.annihilatedDistance.add(1e6).log10().mul(0.8);
+                     const powerBonus = Game.state.annihilatedDistance.pow(0.15).div(1e12);
                      const annihilationBonus = logBonus.add(powerBonus).add(1);
                      return ` (当前增益: ×${Utils.formatOmegaNum(annihilationBonus)})`;
                  }
