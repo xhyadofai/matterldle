@@ -1585,11 +1585,12 @@ function updateDistanceUI() {
                 multiplier = new OmegaNum(2).pow(totalDistanceEnergy.div(10).floor());
             }
             
-            // 湮灭距离增益：削弱公式增幅距离生成
+            // 湮灭距离增益：强化公式增幅距离生成
              if (Game.state.annihilatedDistance && Game.state.annihilatedDistance.gt(0)) {
-                 // 削弱公式：基于湮灭距离本身，log10(湮灭距离+1e9) * 1.2 + (湮灭距离^0.2) / 1e15 + 1
-                 const logComponent = Game.state.annihilatedDistance.add(1e9).log10().mul(1.2);
-                 const powerComponent = Game.state.annihilatedDistance.pow(0.2).div(1e15);
+                 const annihilatedLightYears = Game.state.annihilatedDistance.div(new OmegaNum('9.461e15'));
+                 // 极致增量游戏公式：log10(湮灭光年+1) * 100 + (湮灭光年^0.8) * 50 + 1
+                 const logComponent = annihilatedLightYears.add(1).log10().mul(100);
+                 const powerComponent = annihilatedLightYears.pow(0.8).mul(50);
                  const annihilationBonus = logComponent.add(powerComponent).add(1);
                  baseProduction = baseProduction.mul(annihilationBonus);
              }
@@ -1719,13 +1720,14 @@ function updateDistanceMilestones() {
         },
         { 
             distance: new OmegaNum(1e8), 
-            name: '100km: 湮灭距离以强化公式增益物质', 
+            name: '100km: 湮灭距离以极致公式增益物质', 
             unlocked: Game.state.maxDistance && Game.state.maxDistance.gte(1e8),
             effect: () => {
                  if (Game.state.annihilatedDistance && Game.state.annihilatedDistance.gt(0)) {
-                     // 削弱公式：基于湮灭距离本身，log10(湮灭距离+1e6) * 0.8 + (湮灭距离^0.15) / 1e12 + 1
-                     const logBonus = Game.state.annihilatedDistance.add(1e6).log10().mul(0.8);
-                     const powerBonus = Game.state.annihilatedDistance.pow(0.15).div(1e12);
+                     const annihilatedLightYears = Game.state.annihilatedDistance.div(new OmegaNum('9.461e15'));
+                     // 极致增量游戏公式：log10(湮灭光年+1) * 100 + (湮灭光年^0.8) * 50 + 1
+                     const logBonus = annihilatedLightYears.add(1).log10().mul(100);
+                     const powerBonus = annihilatedLightYears.pow(0.8).mul(50);
                      const annihilationBonus = logBonus.add(powerBonus).add(1);
                      return ` (当前增益: ×${Utils.formatOmegaNum(annihilationBonus)})`;
                  }
