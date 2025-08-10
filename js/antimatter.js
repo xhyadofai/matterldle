@@ -1208,7 +1208,7 @@ function checkChallenge7Complete() {
 
 // 挑战9完成检测：终极湮灭
 function checkChallenge9Complete() {
-    if (challengeState.inChallenge && challengeState.challengeId === 9 && Game.state.currentMatter.gte(new OmegaNum('1e50'))) {
+    if (challengeState.inChallenge && challengeState.challengeId === 9 && Game.state.currentMatter.gte(new OmegaNum('1e40'))) {
         challengeState.inChallenge = false;
         challengeState.completed[9] = true;
         challengeState.challengeId = null;
