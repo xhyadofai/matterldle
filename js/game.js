@@ -908,9 +908,10 @@ window.Game = Game;
                 
                 // 100km里程碑：湮灭距离的效果同样会增益到物质上（投喂黑洞期间禁用）
                 if (this.state.maxDistance.gte(1e8) && this.state.annihilatedDistance && this.state.annihilatedDistance.gt(0) && !isBlackholeChallenge) {
-                    // 削弱公式：基于湮灭距离本身，log10(湮灭距离+1e6) * 0.8 + (湮灭距离^0.15) / 1e12 + 1
-                    const logBonus = this.state.annihilatedDistance.add(1e6).log10().mul(0.8);
-                    const powerBonus = this.state.annihilatedDistance.pow(0.15).div(1e12);
+                    const annihilatedLightYears = this.state.annihilatedDistance.div(new OmegaNum('9.461e15'));
+                    // 极致增量游戏公式：log10(湮灭光年+1) * 100 + (湮灭光年^0.8) * 50 + 1
+                    const logBonus = annihilatedLightYears.add(1).log10().mul(100);
+                    const powerBonus = annihilatedLightYears.pow(0.8).mul(50);
                     const annihilationBonus = logBonus.add(powerBonus).add(1);
                     
                     this.state.matterPerSecond = this.state.matterPerSecond.mul(annihilationBonus);
@@ -1385,9 +1386,9 @@ window.Game = Game;
             const isBlackholeChallenge = window.blackholeChallenge && window.blackholeChallenge.inChallenge;
             if (this.state.annihilatedDistance && this.state.annihilatedDistance.gt(0) && !isBlackholeChallenge) {
                 const annihilatedLightYears = this.state.annihilatedDistance.div(new OmegaNum('9.461e15'));
-                // 极致增量游戏公式：log10(湮灭光年+10) * 10 + (湮灭光年^0.8) * 5 + 1
-                const logComponent = annihilatedLightYears.add(10).log10().mul(10);
-                const powerComponent = annihilatedLightYears.pow(0.8).mul(5);
+                // 极致增量游戏公式：log10(湮灭光年+1) * 100 + (湮灭光年^0.8) * 50 + 1
+                const logComponent = annihilatedLightYears.add(1).log10().mul(100);
+                const powerComponent = annihilatedLightYears.pow(0.8).mul(50);
                 const annihilationBonus = logComponent.add(powerComponent).add(1);
                 baseProduction = baseProduction.mul(annihilationBonus);
             }
